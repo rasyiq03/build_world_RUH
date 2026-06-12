@@ -1,0 +1,18 @@
+{
+  "_desc": "Rute manasik haji — TULANG PUNGGUNG navigasi & teleport antar-place. Tiap segmen = perjalanan antar-zona dalam urutan ritual. waypoints = [lon, lat]. SESUAIKAN dari Google Maps (ini perkiraan awal mengikuti lembah/jalan utama). Titik pertama/terakhir tiap segmen = titik teleport (keluar zona A -> masuk zona B).",
+  "ritual_order": ["Makkah", "Mina", "Arafah", "Muzdalifah", "Mina", "Makkah"],
+  "landmarks": {
+    "Masjidil_Haram": [39.8262, 21.4225],
+    "Jamarat": [39.8732, 21.4225],
+    "Mina_center": [39.8930, 21.4130],
+    "Muzdalifah": [39.9370, 21.3830],
+    "Arafah_JabalRahmah": [39.9840, 21.3550]
+  },
+  "segments": [
+    { "from": "Makkah",     "to": "Mina",       "ritual": "8 Dzulhijjah: mabit di Mina", "start": [39.8262, 21.4225], "end": [39.8930, 21.4130] },
+    { "from": "Mina",       "to": "Arafah",     "ritual": "9 Dzulhijjah: wukuf",          "start": [39.8930, 21.4130], "end": [39.9840, 21.3550] },
+    { "from": "Arafah",     "to": "Muzdalifah", "ritual": "malam: mabit Muzdalifah",      "start": [39.9840, 21.3550], "end": [39.9370, 21.3830] },
+    { "from": "Muzdalifah", "to": "Mina",       "ritual": "10: lempar Jumrah Aqabah",     "start": [39.9370, 21.3830], "end": [39.8732, 21.4225] },
+    { "from": "Mina",       "to": "Makkah",     "ritual": "Tawaf Ifadah",                 "start": [39.8732, 21.4225], "end": [39.8262, 21.4225] }
+  ]
+}

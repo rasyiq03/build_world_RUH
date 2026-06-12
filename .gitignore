@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Generated output (PNG tile + manifest + guide)
+output/
+output_*/
+
+# Data SRTM / demo (besar; jangan commit)
+data/
+*.tif
+*.tiff

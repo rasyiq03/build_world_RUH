@@ -1,0 +1,28 @@
+{
+  "_comment": "RUH Main Place terrain config. Isi field WAJIB di bawah sebelum menjalankan tool. Field wajib: input_tif, box_width_km, box_height_km. Biarkan kosong/null => tool gagal dengan pesan jelas (tidak menebak).",
+
+  "input_tif": "data/output_SRTMGL1.tif",
+  "output_dir": "output",
+
+  "scale_studs_per_m": 4.0,
+
+  "_box_note": "Diturunkan dari geotag output_SRTMGL1.tif: lon 39.76458..40.01819 (0.2536 deg), lat 21.31181..21.48819 (0.1764 deg) di mean_lat 21.4. Konversi ke km true-ground (lon dikompresi cos(lat)). +-~0.3%.",
+  "box_width_km": 26.286,
+  "box_height_km": 19.636,
+
+  "_zones_note": "Crop multi-place per zona, skala 4, norm GLOBAL. box=[lon_min,lat_min,lon_max,lat_max] (content-driven, PROPOSAL — sesuaikan dari Google Maps spt Mina). A_Makkah=inti Masjidil Haram+kota; B_Mina=inti Mina (sudah jadi); C_Arafah=padang Arafah+Jabal Rahmah. Muzdalifah (21.383,39.937) ditunda sbg zona tersendiri bila perlu.",
+  "zones": [
+    { "name": "A_Makkah", "box": [39.806000, 21.404000, 39.846000, 21.441000] },
+    { "name": "B_Mina",   "box": [39.862000, 21.401000, 39.900000, 21.425000] },
+    { "name": "C_Arafah", "box": [39.955000, 21.337000, 40.000000, 21.375000] }
+  ],
+
+  "nodata_threshold": -500.0,
+  "overlap_px": 1,
+  "max_tile_studs": 16384,
+  "max_tile_px": 4096,
+  "max_tile_voxels": 4200000000,
+
+  "output_prefix": "RUH_tile",
+  "flip_z": false
+}

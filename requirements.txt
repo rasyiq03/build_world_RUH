@@ -1,0 +1,12 @@
+# RUH Main Place Terrain Pipeline — dependencies
+# Python 3.10+
+numpy>=1.23
+tifffile>=2023.1.0
+imageio>=2.27
+# GeoTIFF dari OpenTopography sering terkompresi (LZW/Deflate); tifffile butuh
+# imagecodecs untuk membukanya. Wajib untuk SRTM asli.
+imagecodecs>=2023.1.0
+# generate_osm.py: tarik jalan/bangunan dari OpenStreetMap (Overpass API).
+requests>=2.28
+# roads_to_colormap.py: rasterize jalan OSM -> colormap PNG (auto-paint material).
+pillow>=9.0

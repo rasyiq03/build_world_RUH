@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_616b94ac460b5b697311e5088a40370f {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_616b94ac460b5b697311e5088a40370f" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_616b94ac460b5b697311e5088a40370f = L.map(
+                "map_616b94ac460b5b697311e5088a40370f",
+                {
+                    center: [21.415, 39.885],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 12,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_e2a3376187ba1f8fbb97562827a4370d = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_e2a3376187ba1f8fbb97562827a4370d.addTo(map_616b94ac460b5b697311e5088a40370f);
+        
+    
+            var rectangle_43b94354606b27e0943f54b52c598766 = L.rectangle(
+                [[21.38, 39.764], [21.46, 39.85]],
+                {"bubblingMouseEvents": true, "color": "#3186cc", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3186cc", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_616b94ac460b5b697311e5088a40370f);
+        
+    
+        var popup_1d0c15afa4152259c2f03345d0b23248 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_4beca06bb4ef3dc252f4cce71a6ea372 = $(`<div id="html_4beca06bb4ef3dc252f4cce71a6ea372" style="width: 100.0%; height: 100.0%;"><b>ZONA A: Makkah</b><br>Pusat Kota & Haram</div>`)[0];
+                popup_1d0c15afa4152259c2f03345d0b23248.setContent(html_4beca06bb4ef3dc252f4cce71a6ea372);
+            
+        
+
+        rectangle_43b94354606b27e0943f54b52c598766.bindPopup(popup_1d0c15afa4152259c2f03345d0b23248)
+        ;
+
+        
+    
+    
+            rectangle_43b94354606b27e0943f54b52c598766.bindTooltip(
+                `<div>
+                     ZONA A
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_05c60dee470f09528684d5cce2a75cfb = L.rectangle(
+                [[21.39, 39.85], [21.44, 39.92]],
+                {"bubblingMouseEvents": true, "color": "#28a745", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#28a745", "fillOpacity": 0.4, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_616b94ac460b5b697311e5088a40370f);
+        
+    
+        var popup_3caf29985e2ff723ba7d028040d998d5 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8bc7c1938e475d340685d7582a75c79d = $(`<div id="html_8bc7c1938e475d340685d7582a75c79d" style="width: 100.0%; height: 100.0%;"><b>ZONA B: Mina</b><br>Lembah Tenda & Jamarat</div>`)[0];
+                popup_3caf29985e2ff723ba7d028040d998d5.setContent(html_8bc7c1938e475d340685d7582a75c79d);
+            
+        
+
+        rectangle_05c60dee470f09528684d5cce2a75cfb.bindPopup(popup_3caf29985e2ff723ba7d028040d998d5)
+        ;
+
+        
+    
+    
+            rectangle_05c60dee470f09528684d5cce2a75cfb.bindTooltip(
+                `<div>
+                     ZONA B (Fokus Sprint 2)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var rectangle_16814e284b18a69c41feed82d9b5a8f4 = L.rectangle(
+                [[21.311, 39.92], [21.4, 40.018]],
+                {"bubblingMouseEvents": true, "color": "#dc3545", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#dc3545", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_616b94ac460b5b697311e5088a40370f);
+        
+    
+        var popup_24aacbcd2cffe09a54d7345a96615402 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0670a3274dd11b3f1c69c3f31b5321ac = $(`<div id="html_0670a3274dd11b3f1c69c3f31b5321ac" style="width: 100.0%; height: 100.0%;"><b>ZONA C: Arafah</b><br>Muzdalifah & Jabal Wukuf</div>`)[0];
+                popup_24aacbcd2cffe09a54d7345a96615402.setContent(html_0670a3274dd11b3f1c69c3f31b5321ac);
+            
+        
+
+        rectangle_16814e284b18a69c41feed82d9b5a8f4.bindPopup(popup_24aacbcd2cffe09a54d7345a96615402)
+        ;
+
+        
+    
+    
+            rectangle_16814e284b18a69c41feed82d9b5a8f4.bindTooltip(
+                `<div>
+                     ZONA C
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+</script>
+</html>
