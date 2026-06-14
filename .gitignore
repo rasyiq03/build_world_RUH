@@ -12,3 +12,21 @@ output_*/
 data/
 *.tif
 *.tiff
+
+# Rojo build artifacts
+*.rbxl
+*.rbxlx
+sourcemap.json
+
+# Model 3D: file mesh besar TIDAK di-commit; struktur folder (.gitkeep) & docs/MODELS.md ya.
+models/**/*.obj
+models/**/*.mtl
+models/**/*.fbx
+models/**/*.glb
+models/**/*.gltf
+models/**/*.rbxm
+models/**/*.rbxmx
+
+# Binari besar / alat lokal (jangan commit ke repo)
+*.pdf
+*.exe

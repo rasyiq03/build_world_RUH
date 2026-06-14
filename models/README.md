@@ -25,7 +25,7 @@ bekerja dengan PNG/JSON, bukan mesh. Mesh diimpor langsung di Roblox Studio.
 - Rename MeshPart → **`TentMaster`**.
 - Pindahkan ke **ReplicatedStorage**.
 - Sesuaikan **Size** ke ~16 studs (≈ 8 m pada skala 2). 
-- Jalankan `roblox_scripts/place_tents.lua` → clone TentMaster ke tiap titik
+- Jalankan `roblox/common/place_tents.lua` → clone TentMaster ke tiap titik
   `mina_tents.json` (raycast ke terrain).
 
 ### Cek cepat
@@ -35,5 +35,5 @@ bekerja dengan PNG/JSON, bukan mesh. Mesh diimpor langsung di Roblox Studio.
 - [ ] Duduk di tanah (tidak melayang/terbenam)? Atur `SINK` di place_tents.lua.
 - [ ] Tris wajar (puluhan–ratusan, bukan ribuan)?
 
-> Alternatif tanpa Blender: `roblox_scripts/build_tent_master.lua` (bangun via
+> Alternatif tanpa Blender: `roblox/common/build_tent_master.lua` (bangun via
 > Part + Union di Studio), atau ambil 1 mesh tenda dari Toolbox.

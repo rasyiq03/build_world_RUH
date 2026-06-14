@@ -19,6 +19,11 @@ import tempfile
 
 import numpy as np
 
+# Pastikan repo root ada di sys.path supaya `import terrain` jalan walau test
+# dijalankan dari folder tests/ (mis. `python tests/test_pipeline.py`).
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from terrain.config import Config
 from terrain.normalize import clean_and_normalize
 from terrain.tiling import compute_layout, slice_tile

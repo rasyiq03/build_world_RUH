@@ -16,7 +16,7 @@ Pemakaian:
 Di Studio:
   1. Buat ModuleScript di ReplicatedStorage bernama: MinaBuildings, MinaBarriers, MinaTents.
   2. Buka tiap ModuleScript (double-click) -> tempel SELURUH isi file .lua yang sesuai.
-  3. Jalankan roblox_scripts/place_from_modules.lua di Command Bar (kecil, baca module).
+  3. Jalankan roblox/common/place_from_modules.lua di Command Bar (kecil, baca module).
 """
 
 from __future__ import annotations
@@ -92,7 +92,7 @@ def main(argv=None) -> int:
         print("Tak ada file sumber. Jalankan generate_osm.py / corridor_filter.py / generate_tents.py dulu.")
         return 1
     print("\nLangkah Studio: buat ModuleScript di ReplicatedStorage (nama persis seperti di atas),")
-    print("tempel isi tiap .lua, lalu jalankan roblox_scripts/place_from_modules.lua.")
+    print("tempel isi tiap .lua, lalu jalankan roblox/common/place_from_modules.lua.")
     return 0
 
 

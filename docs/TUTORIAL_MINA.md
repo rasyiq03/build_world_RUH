@@ -3,7 +3,7 @@
 Panduan lengkap meng-impor & membangun Mina (skala 4). Ikuti **berurutan** —
 banyak langkah memakai *raycast ke terrain*, jadi **terrain harus ada lebih dulu**.
 
-> Semua file ada di `scripting/output/B_Mina/`. Skrip Lua di `scripting/roblox_scripts/`.
+> Semua file ada di `scripting/output/B_Mina/`. Skrip Lua di `scripting/roblox/`.
 
 ---
 
@@ -71,7 +71,7 @@ Data besar (tenda, lampu, dll.) disimpan di ModuleScript supaya tak kena batas
 ## 4. Bangun Mina (teras + tenda + Jamarat + lampu + guardline)
 
 1. Buka **View → Command Bar**.
-2. Buka `roblox_scripts/build_mina.lua`, **salin seluruhnya**, **tempel ke Command
+2. Buka `roblox/build_mina.lua`, **salin seluruhnya**, **tempel ke Command
    Bar**, Enter. (Beberapa detik — meratakan 403 blok + sebar 7.160 tenda.)
 
 Output Console yang diharapkan:
@@ -89,7 +89,7 @@ Cek **Workspace**: folder `Mina_Tents`, `Mina_Barriers`, `Jamarat`, `Mina_Lamps`
 
 ## 5. Gambar Jalur Manasik
 
-1. Buka `roblox_scripts/render_route.lua`, salin, tempel ke **Command Bar**, Enter.
+1. Buka `roblox/render_route.lua`, salin, tempel ke **Command Bar**, Enter.
 2. Jejak jalan tergambar mengikuti rute; **ruas terowongan ditandai gelap**.
    Cek folder `Mina_Route` di Workspace. Penanda kuning = titik KELUAR (teleport).
 
@@ -99,7 +99,7 @@ Cek **Workspace**: folder `Mina_Tents`, `Mina_Barriers`, `Jamarat`, `Mina_Lamps`
 
 1. Di Explorer: **StarterPlayer → StarterPlayerScripts** → klik kanan → **Insert
    Object → LocalScript**.
-2. Buka LocalScript itu → **tempel seluruh isi** `roblox_scripts/nav_guide.lua`.
+2. Buka LocalScript itu → **tempel seluruh isi** `roblox/nav_guide.lua`.
 3. (Tak perlu rename.)
 
 Saat **Play**: muncul penunjuk atas-tengah → **"➤ [ritual] — XXX m — ±menit"**.

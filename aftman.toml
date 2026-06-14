@@ -1,0 +1,5 @@
+# Aftman (https://github.com/LPGhatguy/aftman) — manajer versi alat untuk tim.
+# Cara pakai (sekali per mesin): `aftman install` di folder ini -> dapat Rojo terkunci.
+# Lalu: `rojo serve` -> di Studio, plugin Rojo -> Connect.
+[tools]
+rojo = "rojo-rbx/rojo@7.4.4"

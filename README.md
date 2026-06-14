@@ -1,14 +1,26 @@
-# RUH Main Place — Terrain Pipeline
+# RUH — Route to Umrah & Hajj
 
-CLI Python yang mengubah **satu GeoTIFF SRTM** menjadi **beberapa tile PNG 16-bit**
-+ `import_manifest.json` + `IMPORT_GUIDE.md` untuk **Roblox Studio Terrain Importer**.
+Repo **perancangan & pembangunan** simulator manasik haji/umrah di Roblox (proyek EAS
+Komputer Grafik, tim 3 orang): pipeline terrain, generator konten, kode game Lua (Rojo),
+dan dokumen rancangan.
 
-Dipakai untuk membangun *Main Place* RUH (Route to Umrah & Hajj): dunia menerus
-berskala besar yang bisa dijalani penuh dari Masjidil Haram → Mina → Muzdalifah →
-Arafah dengan topografi nyata.
+> **Mulai dari [docs/GAME_DESIGN.md](docs/GAME_DESIGN.md)** — anchor: alur manasik, 4 zona,
+> 4 jenis ibadah, ritual, pembagian tim. Bagian di bawah fokus **pipeline terrain** (satu
+> lapisan): GeoTIFF SRTM → tile PNG 16-bit + manifest untuk Terrain Importer. Kontrak terrain:
+> [`AGENTS.md`](AGENTS.md), [`docs/SPEC.md`](docs/SPEC.md) (otoritatif), [`docs/PIPELINE.md`](docs/PIPELINE.md), [`docs/PLAYBOOK.md`](docs/PLAYBOOK.md).
 
-> Dokumen kontrak: `AGENTS.md` (aturan), `SPEC.md` (angka & rumus, otoritatif),
-> `PIPELINE.md` (I/O), `TASKS.md` (urutan kerja).
+## Struktur repo
+
+| Path | Isi |
+|---|---|
+| `convert_terrain.py` · `terrain/` | CLI + paket pipeline terrain (root, entry utama) |
+| `generators/` | generator konten: OSM, tenda, teras, route, JSON→Lua (`generate_*.py`, dll.) |
+| `tools/` | utilitas: `make_demo_dem.py`, visualisasi |
+| `roblox/` | kode Lua in-game (proyek Rojo): `shared/`, `places/`, `npc/` + zona lama |
+| `docs/` | `GAME_DESIGN.md` (anchor), `SPEC`, `PIPELINE`, `PLAYBOOK`, `MODELS`, `COMPUTER_GRAPHICS` + `progress/`, `studio/` |
+| `models/` | folder tujuan model 3D per area (lihat `docs/MODELS.md`) |
+| `tests/` | `test_pipeline.py` (smoke test) |
+| `output/` · `data/` | artefak (gitignored) |
 
 ## Kenapa di-tile & 16-bit?
 
@@ -78,7 +90,7 @@ Output ke `output/`:
 ## Verifikasi / QA
 
 ```bash
-python test_pipeline.py        # smoke test (tanpa SRTM asli)
+python tests/test_pipeline.py  # smoke test (tanpa SRTM asli)
 ```
 Membuktikan: output uint16, **normalisasi global** (kolom/baris overlap antar-tile
 identik), overlap 1 px, jumlah tile benar, tiap PNG ≤ 4096 px, Position simetris
@@ -86,7 +98,7 @@ identik), overlap 1 px, jumlah tile benar, tiap PNG ≤ 4096 px, Position simetr
 
 Mau coba tanpa data SRTM nyata? Buat GeoTIFF sintetis lebih dulu:
 ```bash
-python make_demo_dem.py        # -> data/demo_srtm.tif (elev 210..1014 m)
+python tools/make_demo_dem.py  # -> data/demo_srtm.tif (elev 210..1014 m)
 python convert_terrain.py --input data/demo_srtm.tif --box 26 16 --scale 2 --dry-run
 ```
 

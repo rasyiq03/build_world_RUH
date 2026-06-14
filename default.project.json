@@ -1,0 +1,20 @@
+{
+  "name": "RUH",
+  "globIgnorePaths": ["**/*.md", "**/.gitkeep"],
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+      "Shared": { "$path": "roblox/shared" },
+      "Npc": { "$path": "roblox/npc" }
+    },
+
+    "ServerScriptService": {
+      "Server": { "$path": "roblox/server" }
+    },
+
+    "StarterPlayer": {
+      "StarterPlayerScripts": { "$path": "roblox/client" }
+    }
+  }
+}

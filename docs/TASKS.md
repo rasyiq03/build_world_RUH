@@ -1,4 +1,8 @@
-# TASKS.md — Urutan Pengerjaan
+# TASKS.md — Urutan Pengerjaan (Pipeline Terrain)
+
+> ⚠️ **Historis / cakupan sempit.** Berkas ini = checklist pipeline TERRAIN awal (sebagian besar
+> sudah selesai). Untuk rancangan & roadmap GAME penuh (4 zona, ritual, tim), lihat
+> **[GAME_DESIGN.md](GAME_DESIGN.md)** & **[PLAYBOOK.md](PLAYBOOK.md)**.
 
 Kerjakan berurutan. Jangan lompat ke tahap berikut sebelum tahap sebelumnya terverifikasi.
 
