@@ -1,0 +1,23 @@
+{
+  "name": "RUH_Lobby",
+  "globIgnorePaths": ["**/*.md", "**/.gitkeep"],
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+      "Shared": { "$path": "roblox/shared" },
+      "Npc": { "$path": "roblox/npc" }
+    },
+
+    "ServerScriptService": {
+      "LobbyServer": { "$path": "roblox/places/Lobby/LobbyServer.server.lua" }
+    },
+
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "$path": "roblox/client",
+        "LobbyClient": { "$path": "roblox/places/Lobby/LobbyClient.client.lua" }
+      }
+    }
+  }
+}

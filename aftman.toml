@@ -3,3 +3,5 @@
 # Lalu: `rojo serve` -> di Studio, plugin Rojo -> Connect.
 [tools]
 rojo = "rojo-rbx/rojo@7.4.4"
+# Lune: runtime Luau headless untuk skill mock-roblox (uji mekanisme tanpa Studio).
+lune = "lune-org/lune@0.10.4"

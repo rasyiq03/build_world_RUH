@@ -30,3 +30,7 @@ models/**/*.rbxmx
 # Binari besar / alat lokal (jangan commit ke repo)
 *.pdf
 *.exe
+
+# Konfigurasi lokal Claude Code (spesifik mesin; jangan commit). Skill mock-roblox tetap di-commit.
+.claude/settings.local.json
+.claude/launch.json

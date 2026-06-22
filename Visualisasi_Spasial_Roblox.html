@@ -1,200 +1,39 @@
 <!DOCTYPE html>
-<html>
-<head>
-    
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
-    
-            <meta name="viewport" content="width=device-width,
-                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-            <style>
-                #map_616b94ac460b5b697311e5088a40370f {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 1rem; }
-            </style>
-
-            <style>html, body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-            </style>
-
-            <style>#map {
-                position:absolute;
-                top:0;
-                bottom:0;
-                right:0;
-                left:0;
-                }
-            </style>
-
-            <script>
-                L_NO_TOUCH = false;
-                L_DISABLE_3D = false;
-            </script>
-
-        
-</head>
-<body>
-    
-    
-            <div class="folium-map" id="map_616b94ac460b5b697311e5088a40370f" ></div>
-        
-</body>
+<html lang="id"><head><meta charset="utf-8"/>
+<title>Peta Spasial Zona Ritual — RUH</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  html,body,#map{height:100%;margin:0}
+  .legend{background:#fff;padding:9px 11px;border-radius:6px;font:13px/1.5 sans-serif;box-shadow:0 1px 4px #0003;max-width:270px}
+  .legend b{display:block;margin-bottom:5px}
+  .sw{display:inline-block;width:12px;height:12px;border-radius:2px;vertical-align:middle;margin-right:6px;opacity:.65}
+  .zlbl{background:rgba(255,255,255,.85);border:none;box-shadow:0 1px 3px #0004;font-weight:600;padding:1px 5px}
+</style></head><body><div id="map"></div>
 <script>
-    
-    
-            var map_616b94ac460b5b697311e5088a40370f = L.map(
-                "map_616b94ac460b5b697311e5088a40370f",
-                {
-                    center: [21.415, 39.885],
-                    crs: L.CRS.EPSG3857,
-                    ...{
-  "zoom": 12,
-  "zoomControl": true,
-  "preferCanvas": false,
-}
-
-                }
-            );
-
-            
-
-        
-    
-            var tile_layer_e2a3376187ba1f8fbb97562827a4370d = L.tileLayer(
-                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                {
-  "minZoom": 0,
-  "maxZoom": 19,
-  "maxNativeZoom": 19,
-  "noWrap": false,
-  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
-  "subdomains": "abc",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-}
-
-            );
-        
-    
-            tile_layer_e2a3376187ba1f8fbb97562827a4370d.addTo(map_616b94ac460b5b697311e5088a40370f);
-        
-    
-            var rectangle_43b94354606b27e0943f54b52c598766 = L.rectangle(
-                [[21.38, 39.764], [21.46, 39.85]],
-                {"bubblingMouseEvents": true, "color": "#3186cc", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3186cc", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
-            ).addTo(map_616b94ac460b5b697311e5088a40370f);
-        
-    
-        var popup_1d0c15afa4152259c2f03345d0b23248 = L.popup({
-  "maxWidth": "100%",
+const RECTS=[{"name": "A_Makkah", "label": "Makkah — Masjidil Haram (Tawaf, Sa'i)", "color": "#3186cc", "bounds": [[21.404, 39.806], [21.441, 39.846]], "center": [21.4225, 39.82599999999999]}, {"name": "B_Mina", "label": "Mina — Tenda & 3 Jamarat (lempar jumrah)", "color": "#28a745", "bounds": [[21.401, 39.862], [21.425, 39.9]], "center": [21.413, 39.881]}, {"name": "C_Arafah", "label": "Arafah — Wukuf (Jabal Rahmah, Namirah)", "color": "#dc3545", "bounds": [[21.337, 39.955], [21.375, 40.0]], "center": [21.356, 39.9775]}, {"name": "D_Muzdalifah", "label": "Muzdalifah — Mabit & ambil kerikil (Masy'aril Haram)", "color": "#fd7e14", "bounds": [[21.366, 39.917], [21.4, 39.957]], "center": [21.383, 39.937]}], FLOW=[[21.4225, 39.82599999999999], [21.413, 39.881], [21.356, 39.9775], [21.383, 39.937], [21.413, 39.881], [21.4225, 39.82599999999999]];
+const map=L.map('map');
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  {maxZoom:19, attribution:'© OpenStreetMap'}).addTo(map);
+let all=[];
+RECTS.forEach(z=>{
+  L.rectangle(z.bounds,{color:z.color,weight:2,fillColor:z.color,fillOpacity:.25}).addTo(map)
+    .bindPopup('<b>'+z.label+'</b><br>zona: '+z.name);
+  L.marker(z.center).addTo(map).bindTooltip(z.label,{permanent:true,direction:'top',className:'zlbl'});
+  all=all.concat(z.bounds);
 });
-
-        
-            
-                var html_4beca06bb4ef3dc252f4cce71a6ea372 = $(`<div id="html_4beca06bb4ef3dc252f4cce71a6ea372" style="width: 100.0%; height: 100.0%;"><b>ZONA A: Makkah</b><br>Pusat Kota & Haram</div>`)[0];
-                popup_1d0c15afa4152259c2f03345d0b23248.setContent(html_4beca06bb4ef3dc252f4cce71a6ea372);
-            
-        
-
-        rectangle_43b94354606b27e0943f54b52c598766.bindPopup(popup_1d0c15afa4152259c2f03345d0b23248)
-        ;
-
-        
-    
-    
-            rectangle_43b94354606b27e0943f54b52c598766.bindTooltip(
-                `<div>
-                     ZONA A
-                 </div>`,
-                {
-  "sticky": true,
+if(FLOW.length>1){
+  L.polyline(FLOW,{color:'#444',weight:2,dashArray:'8 8',opacity:.85}).addTo(map)
+   .bindPopup('Alur manasik (skematik): Makkah → Mina → Arafah → Muzdalifah → Mina → Makkah');
 }
-            );
-        
-    
-            var rectangle_05c60dee470f09528684d5cce2a75cfb = L.rectangle(
-                [[21.39, 39.85], [21.44, 39.92]],
-                {"bubblingMouseEvents": true, "color": "#28a745", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#28a745", "fillOpacity": 0.4, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
-            ).addTo(map_616b94ac460b5b697311e5088a40370f);
-        
-    
-        var popup_3caf29985e2ff723ba7d028040d998d5 = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_8bc7c1938e475d340685d7582a75c79d = $(`<div id="html_8bc7c1938e475d340685d7582a75c79d" style="width: 100.0%; height: 100.0%;"><b>ZONA B: Mina</b><br>Lembah Tenda & Jamarat</div>`)[0];
-                popup_3caf29985e2ff723ba7d028040d998d5.setContent(html_8bc7c1938e475d340685d7582a75c79d);
-            
-        
-
-        rectangle_05c60dee470f09528684d5cce2a75cfb.bindPopup(popup_3caf29985e2ff723ba7d028040d998d5)
-        ;
-
-        
-    
-    
-            rectangle_05c60dee470f09528684d5cce2a75cfb.bindTooltip(
-                `<div>
-                     ZONA B (Fokus Sprint 2)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var rectangle_16814e284b18a69c41feed82d9b5a8f4 = L.rectangle(
-                [[21.311, 39.92], [21.4, 40.018]],
-                {"bubblingMouseEvents": true, "color": "#dc3545", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#dc3545", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
-            ).addTo(map_616b94ac460b5b697311e5088a40370f);
-        
-    
-        var popup_24aacbcd2cffe09a54d7345a96615402 = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_0670a3274dd11b3f1c69c3f31b5321ac = $(`<div id="html_0670a3274dd11b3f1c69c3f31b5321ac" style="width: 100.0%; height: 100.0%;"><b>ZONA C: Arafah</b><br>Muzdalifah & Jabal Wukuf</div>`)[0];
-                popup_24aacbcd2cffe09a54d7345a96615402.setContent(html_0670a3274dd11b3f1c69c3f31b5321ac);
-            
-        
-
-        rectangle_16814e284b18a69c41feed82d9b5a8f4.bindPopup(popup_24aacbcd2cffe09a54d7345a96615402)
-        ;
-
-        
-    
-    
-            rectangle_16814e284b18a69c41feed82d9b5a8f4.bindTooltip(
-                `<div>
-                     ZONA C
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-</script>
-</html>
+if(all.length) map.fitBounds(all,{padding:[35,35]});
+const lg=L.control({position:'topright'});
+lg.onAdd=()=>{const d=L.DomUtil.create('div','legend');
+  let h='<b>Zona Ritual RUH (Main Place)</b>';
+  RECTS.forEach(z=>{h+='<div><span class="sw" style="background:'+z.color+'"></span>'+z.label+'</div>';});
+  h+='<div style="margin-top:6px;border-top:1px solid #ddd;padding-top:5px">'
+    +'- - - alur manasik (skematik)<br><small>5 miqat di luar bingkai (jauh dari Makkah)</small></div>';
+  d.innerHTML=h;return d;};
+lg.addTo(map);
+</script></body></html>

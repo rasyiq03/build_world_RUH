@@ -39,6 +39,7 @@ Flows.Umrah = {
 Flows.HajiTamattu = {
 	-- Fase umrah (sebelum 8 Dzulhijjah)
 	{ id = "IHRAM_UMRAH",    place = "Miqat",  ritual = "IhramChange",  notes = "niat umrah" },
+	{ id = "KE_MAKKAH",      place = "Miqat",  ritual = "BusRide",      notes = "transisi ke Makkah" },
 	{ id = "TAWAF_UMRAH",    place = "Makkah", ritual = "TawafCounter" },
 	{ id = "SAI_UMRAH",      place = "Makkah", ritual = "SaiCounter" },
 	{ id = "TAHALLUL_UMRAH", place = "Makkah", ritual = "Tahallul",     notes = "tahallul umrah (lepas ihram)" },
@@ -48,7 +49,8 @@ Flows.HajiTamattu = {
 	{ id = "WUKUF",            place = "Arafah",     ritual = "Wukuf",         day = "9",     notes = "dzuhur-maghrib + WukufIbadah" },
 	{ id = "MABIT_MUZDALIFAH", place = "Muzdalifah", ritual = "PebbleCollect", day = "9-10",  notes = "mabit + ambil kerikil" },
 	{ id = "JUMRAH_AQABAH",    place = "Mina",       ritual = "JumrahThrow",   day = "10",    notes = "jumrah aqabah (7 batu)" },
-	{ id = "TAHALLUL_AWAL",    place = "Mina",       ritual = "Tahallul",      day = "10",    notes = "+ Qurban (dam wajib)" },
+	{ id = "QURBAN",           place = "Mina",       ritual = "Qurban",        day = "10",    notes = "sembelih hadyu (dam wajib)" },
+	{ id = "TAHALLUL_AWAL",    place = "Mina",       ritual = "Tahallul",      day = "10",    notes = "cukur (tahallul awal)" },
 	{ id = "TAWAF_IFADAH",     place = "Makkah",     ritual = "TawafCounter",  day = "10+",   notes = "+ Sa'i (rukun)" },
 	{ id = "MABIT_MINA_2",     place = "Mina",       ritual = "JumrahThrow",   day = "11-13", notes = "mabit + lempar 3 jumrah/hari" },
 	{ id = "TAWAF_WADA",       place = "Makkah",     ritual = "TawafCounter",                 notes = "perpisahan" },
@@ -56,6 +58,7 @@ Flows.HajiTamattu = {
 
 Flows.HajiIfrad = {
 	{ id = "IHRAM_HAJI",       place = "Miqat",      ritual = "IhramChange",   day = "sblm/8", notes = "niat haji saja" },
+	{ id = "KE_MAKKAH",        place = "Miqat",      ritual = "BusRide",                       notes = "transisi ke Makkah" },
 	{ id = "TAWAF_QUDUM",      place = "Makkah",     ritual = "TawafCounter",                  notes = "tawaf kedatangan (sunnah)" },
 	{ id = "SAI_HAJI_AWAL",    place = "Makkah",     ritual = "SaiCounter",                    notes = "sa'i haji; ihram DITAHAN (tidak tahallul)" },
 	{ id = "MABIT_MINA_1",     place = "Mina",       ritual = "Mabit",         day = "8-9",    notes = "tarwiyah" },
@@ -70,13 +73,15 @@ Flows.HajiIfrad = {
 
 Flows.HajiQiran = {
 	{ id = "IHRAM_QIRAN",      place = "Miqat",      ritual = "IhramChange",   day = "sblm/8", notes = "niat umrah & haji sekaligus" },
+	{ id = "KE_MAKKAH",        place = "Miqat",      ritual = "BusRide",                       notes = "transisi ke Makkah" },
 	{ id = "TAWAF_QUDUM",      place = "Makkah",     ritual = "TawafCounter",                  notes = "tawaf kedatangan" },
 	{ id = "SAI_QIRAN",        place = "Makkah",     ritual = "SaiCounter",                    notes = "sa'i umrah+haji; ihram DITAHAN" },
 	{ id = "MABIT_MINA_1",     place = "Mina",       ritual = "Mabit",         day = "8-9" },
 	{ id = "WUKUF",            place = "Arafah",     ritual = "Wukuf",         day = "9" },
 	{ id = "MABIT_MUZDALIFAH", place = "Muzdalifah", ritual = "PebbleCollect", day = "9-10" },
 	{ id = "JUMRAH_AQABAH",    place = "Mina",       ritual = "JumrahThrow",   day = "10" },
-	{ id = "QURBAN_TAHALLUL",  place = "Mina",       ritual = "Tahallul",      day = "10",     notes = "Qurban (dam WAJIB) + tahallul" },
+	{ id = "QURBAN",           place = "Mina",       ritual = "Qurban",        day = "10",     notes = "sembelih hadyu (dam WAJIB)" },
+	{ id = "TAHALLUL_AWAL",    place = "Mina",       ritual = "Tahallul",      day = "10",     notes = "cukur (tahallul awal)" },
 	{ id = "TAWAF_IFADAH",     place = "Makkah",     ritual = "TawafCounter",  day = "10+",    notes = "rukun (Sa'i sudah terpenuhi)" },
 	{ id = "MABIT_MINA_2",     place = "Mina",       ritual = "JumrahThrow",   day = "11-13" },
 	{ id = "TAWAF_WADA",       place = "Makkah",     ritual = "TawafCounter" },

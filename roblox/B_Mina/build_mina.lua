@@ -176,6 +176,42 @@ if jData and jData.center then
 		:format(levels, jx, jz, topY - baseY))
 end
 
+-- ---------- TEMPAT QURBAN (tempat sembelih hadyu/dam) ----------
+-- Dibaca PlaceContext.Mina sebagai Workspace.TempatQurban (top-level) untuk ritual Qurban.
+-- Posisi: di tepi area Jamarat bila datanya ada; jika tidak, offset tetap dekat origin.
+do
+	local existing = workspace:FindFirstChild("TempatQurban")
+	if existing then existing:Destroy() end
+	local qx, qz
+	if jData and jData.center then
+		qx, qz = jData.center.x + 260, jData.center.z + 180
+	else
+		qx, qz = 250, 120
+	end
+	local y = terrainY(qx, qz) or 0
+	-- Lantai/peron sembelih.
+	local peron = Instance.new("Part")
+	peron.Name = "TempatQurban"
+	peron.Anchored = true
+	peron.CanCollide = true
+	peron.Size = Vector3.new(44, 4, 32)
+	peron.Position = Vector3.new(qx, y + 2, qz)
+	peron.Material = Enum.Material.WoodPlanks
+	peron.Color = Color3.fromRGB(150, 120, 90)
+	peron.Parent = workspace
+	-- Atap penanda sederhana (anak dari peron, biar mudah dikenali; PlaceContext baca BasePart "TempatQurban").
+	local atap = Instance.new("Part")
+	atap.Name = "Atap"
+	atap.Anchored = true
+	atap.CanCollide = false
+	atap.Size = Vector3.new(48, 2, 36)
+	atap.Position = Vector3.new(qx, y + 24, qz)
+	atap.Material = Enum.Material.Metal
+	atap.Color = Color3.fromRGB(120, 130, 140)
+	atap.Parent = peron
+	print(("[Mina] TempatQurban di (%.0f, %.0f)."):format(qx, qz))
+end
+
 -- ---------- LAMPU (clone LampMaster) ----------
 local lData = loadData("MinaLamps")
 if lData then

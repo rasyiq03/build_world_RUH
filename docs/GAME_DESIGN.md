@@ -106,6 +106,11 @@ Menambah jenis ibadah = menambah satu tabel `FLOWS`, **bukan** menulis ulang log
 
 > Ini draf pemahaman umum agar kamu **mengoreksi**, bukan menulis dari nol. Periksa urutan,
 > hari, dan kewajiban (dam, tahallul awal/tsani). `place` memetakan ke peta §2.
+>
+> **Sumber kebenaran implementasi = [`roblox/shared/Flows.lua`](../roblox/shared/Flows.lua).**
+> Bila tabel di bawah berbeda dari Flows, **Flows yang benar** — tabel ini ringkasan baca-manusia.
+> Tahap yang sudah jadi & teruji: `KE_MAKKAH` (BusRide, semua alur), `QURBAN` (tahap tersendiri
+> sebelum tahallul di alur ber-dam), `JUMRAH_AQABAH` & `MABIT_MINA_2` (JumrahThrow).
 
 ### 5.1 Umrah
 
@@ -121,16 +126,17 @@ Menambah jenis ibadah = menambah satu tabel `FLOWS`, **bukan** menulis ulang log
 
 | #    | id                                | place         | hari                 | ritual                                         |
 | ---- | --------------------------------- | ------------- | -------------------- | ---------------------------------------------- |
-| 1–5 | (UMRAH penuh spt §5.1, tahallul) |               | sebelum 8 Dzulhijjah |                                                |
+| 1–5 | (UMRAH penuh §5.1, incl. bus KE_MAKKAH + tahallul) |    | sebelum 8 Dzulhijjah |                                                |
 | 6    | IHRAM_HAJI                        | Makkah        | 8                    | IhramHaji + niat haji                          |
 | 7    | MABIT_MINA_1                      | Mina          | 8→9                 | Mabit                                          |
 | 8    | WUKUF                             | Arafah        | 9                    | Wukuf (dzuhur–maghrib) + WukufIbadah          |
 | 9    | MABIT_MUZDALIFAH                  | Muzdalifah    | 9→10                | Mabit + PebbleCollect                          |
 | 10   | JUMRAH_AQABAH                     | Mina          | 10                   | JumrahThrow (Aqabah)                           |
-| 11   | TAHALLUL_AWAL + QURBAN            | Mina/Tahallul | 10                   | Tahallul + Qurban (dam)                        |
-| 12   | TAWAF_IFADAH                      | Makkah        | 10+                  | TawafCounter + SaiCounter                      |
-| 13   | MABIT_MINA_2 + JUMRAH             | Mina          | 11–13               | Mabit + JumrahThrow (Ula, Wustha, Aqabah)/hari |
-| 14   | TAWAF_WADA                        | Makkah        | akhir                | TawafCounter                                   |
+| 11   | QURBAN                            | Mina          | 10                   | Qurban (hadyu/dam wajib)                       |
+| 12   | TAHALLUL_AWAL                     | Mina/Tahallul | 10                   | Tahallul (cukur awal)                          |
+| 13   | TAWAF_IFADAH                      | Makkah        | 10+                  | TawafCounter + SaiCounter                      |
+| 14   | MABIT_MINA_2                      | Mina          | 11–13               | JumrahThrow (Ula, Wustha, Aqabah)/hari         |
+| 15   | TAWAF_WADA                        | Makkah        | akhir                | TawafCounter                                   |
 
 ### 5.3 Haji Ifrad (haji saja, tanpa umrah,  **tanpa dam** )
 
@@ -139,16 +145,17 @@ Pelaksanaan haji murni. Tawaf Qudum dan Sa'i bisa dilakukan di awal kedatangan, 
 | **#** | **id**     | **place** | **hari**    | **ritual**        | **catatan**                                    |
 | ----------- | ---------------- | --------------- | ----------------- | ----------------------- | ---------------------------------------------------- |
 | 1           | IHRAM_HAJI       | Miqat           | Sblm/8 Dzulhijjah | IhramChange + niat haji | pakai ihram, niat haji saja                          |
-| 2           | TAWAF_QUDUM      | Makkah          | Kedatangan        | TawafCounter (7×)      | tawaf kedatangan (sunnah)                            |
-| 3           | SAI_HAJI_AWAL    | Makkah          | Kedatangan        | SaiCounter (7×)        | Sa'i haji,**ihram ditahan (tidak tahallul)**   |
-| 4           | MABIT_MINA_1     | Mina            | 8→9              | Mabit                   | sunnah tarwiyah                                      |
-| 5           | WUKUF            | Arafah          | 9                 | Wukuf + WukufIbadah     | mulai dzuhur hingga maghrib                          |
-| 6           | MABIT_MUZDALIFAH | Muzdalifah      | 9→10             | Mabit + PebbleCollect   | ambil kerikil untuk jumrah                           |
-| 7           | JUMRAH_AQABAH    | Mina            | 10                | JumrahThrow (Aqabah)    | melempar jumrah aqabah (7 batu)                      |
-| 8           | TAHALLUL_AWAL    | Mina/Tahallul   | 10                | Tahallul (cukur)        | lepas ihram awal,**tanpa qurban/dam**          |
-| 9           | TAWAF_IFADAH     | Makkah          | 10+               | TawafCounter (7×)      | rukun haji (jika belum Sa'i di tahap 3, tambah Sa'i) |
-| 10          | MABIT_MINA_2     | Mina            | 11–13            | Mabit + JumrahThrow     | mabit & lempar 3 jumrah (Ula, Wustha, Aqabah)/hari   |
-| 11          | TAWAF_WADA       | Makkah          | akhir             | TawafCounter (7×)      | tawaf perpisahan sebelum pulang                      |
+| 2           | KE_MAKKAH        | Miqat (bus)     | Sblm/8            | BusRide                 | transisi miqat → Makkah                              |
+| 3           | TAWAF_QUDUM      | Makkah          | Kedatangan        | TawafCounter (7×)      | tawaf kedatangan (sunnah)                            |
+| 4           | SAI_HAJI_AWAL    | Makkah          | Kedatangan        | SaiCounter (7×)        | Sa'i haji,**ihram ditahan (tidak tahallul)**   |
+| 5           | MABIT_MINA_1     | Mina            | 8→9              | Mabit                   | sunnah tarwiyah                                      |
+| 6           | WUKUF            | Arafah          | 9                 | Wukuf + WukufIbadah     | mulai dzuhur hingga maghrib                          |
+| 7           | MABIT_MUZDALIFAH | Muzdalifah      | 9→10             | Mabit + PebbleCollect   | ambil kerikil untuk jumrah                           |
+| 8           | JUMRAH_AQABAH    | Mina            | 10                | JumrahThrow (Aqabah)    | melempar jumrah aqabah (7 batu)                      |
+| 9           | TAHALLUL_AWAL    | Mina/Tahallul   | 10                | Tahallul (cukur)        | lepas ihram awal,**tanpa qurban/dam**          |
+| 10          | TAWAF_IFADAH     | Makkah          | 10+               | TawafCounter (7×)      | rukun haji (jika belum Sa'i di tahap 3, tambah Sa'i) |
+| 11          | MABIT_MINA_2     | Mina            | 11–13            | JumrahThrow             | lempar 3 jumrah (Ula, Wustha, Aqabah)/hari           |
+| 12          | TAWAF_WADA       | Makkah          | akhir             | TawafCounter (7×)      | tawaf perpisahan sebelum pulang                      |
 
 ### 5.4 Haji Qiran (umrah+haji sekaligus, 1 ihram,  **ada dam** )
 
@@ -157,16 +164,18 @@ Menggabungkan niat haji dan umrah. Tawaf Qudum dan Sa'i di awal sudah mencakup u
 | **#** | **id**     | **place** | **hari**    | **ritual**         | **catatan**                                              |
 | ----------- | ---------------- | --------------- | ----------------- | ------------------------ | -------------------------------------------------------------- |
 | 1           | IHRAM_QIRAN      | Miqat           | Sblm/8 Dzulhijjah | IhramChange + niat qiran | niat umrah & haji sekaligus                                    |
-| 2           | TAWAF_QUDUM      | Makkah          | Kedatangan        | TawafCounter (7×)       | tawaf kedatangan                                               |
-| 3           | SAI_QIRAN        | Makkah          | Kedatangan        | SaiCounter (7×)         | Sa'i untuk umrah+haji,**ihram ditahan (tidak tahallul)** |
-| 4           | MABIT_MINA_1     | Mina            | 8→9              | Mabit                    | sunnah tarwiyah                                                |
-| 5           | WUKUF            | Arafah          | 9                 | Wukuf + WukufIbadah      | mulai dzuhur hingga maghrib                                    |
-| 6           | MABIT_MUZDALIFAH | Muzdalifah      | 9→10             | Mabit + PebbleCollect    | ambil kerikil untuk jumrah                                     |
-| 7           | JUMRAH_AQABAH    | Mina            | 10                | JumrahThrow (Aqabah)     | melempar jumrah aqabah (7 batu)                                |
-| 8           | QURBAN_TAHALLUL  | Mina/Tahallul   | 10                | Qurban (dam) + Tahallul  | **wajib qurban (dam)** , dilanjutkan cukur/tahallul      |
-| 9           | TAWAF_IFADAH     | Makkah          | 10+               | TawafCounter (7×)       | rukun haji (Sa'i sudah terpenuhi di tahap 3)                   |
-| 10          | MABIT_MINA_2     | Mina            | 11–13            | Mabit + JumrahThrow      | mabit & lempar 3 jumrah (Ula, Wustha, Aqabah)/hari             |
-| 11          | TAWAF_WADA       | Makkah          | akhir             |                          |                                                                |
+| 2           | KE_MAKKAH        | Miqat (bus)     | Sblm/8            | BusRide                  | transisi miqat → Makkah                                        |
+| 3           | TAWAF_QUDUM      | Makkah          | Kedatangan        | TawafCounter (7×)       | tawaf kedatangan                                               |
+| 4           | SAI_QIRAN        | Makkah          | Kedatangan        | SaiCounter (7×)         | Sa'i untuk umrah+haji,**ihram ditahan (tidak tahallul)** |
+| 5           | MABIT_MINA_1     | Mina            | 8→9              | Mabit                    | sunnah tarwiyah                                                |
+| 6           | WUKUF            | Arafah          | 9                 | Wukuf + WukufIbadah      | mulai dzuhur hingga maghrib                                    |
+| 7           | MABIT_MUZDALIFAH | Muzdalifah      | 9→10             | Mabit + PebbleCollect    | ambil kerikil untuk jumrah                                     |
+| 8           | JUMRAH_AQABAH    | Mina            | 10                | JumrahThrow (Aqabah)     | melempar jumrah aqabah (7 batu)                                |
+| 9           | QURBAN           | Mina            | 10                | Qurban (hadyu/dam)       | **wajib qurban (dam)** — sebelum tahallul                |
+| 10          | TAHALLUL_AWAL    | Mina/Tahallul   | 10                | Tahallul (cukur awal)    | lepas ihram awal setelah qurban                                |
+| 11          | TAWAF_IFADAH     | Makkah          | 10+               | TawafCounter (7×)       | rukun haji (Sa'i sudah terpenuhi di tahap 4)                   |
+| 12          | MABIT_MINA_2     | Mina            | 11–13            | JumrahThrow              | lempar 3 jumrah (Ula, Wustha, Aqabah)/hari                     |
+| 13          | TAWAF_WADA       | Makkah          | akhir             | TawafCounter (7×)       | tawaf perpisahan sebelum pulang                                |
 
 ### 5.5 Catatan implementasi alur (untuk codegen `FLOWS`)
 
@@ -176,11 +185,15 @@ Menggabungkan niat haji dan umrah. Tawaf Qudum dan Sa'i di awal sudah mencakup u
 - **`place: "…/Tahallul"`** = ritual `Tahallul` dijalankan di sub-lokasi cukur DALAM Mina (haji) /
   Makkah (umrah) — bukan teleport ke zona terpisah. Modul `Tahallul` (milik Nabil) dipanggil
   lintas-area lewat kontrak `shared`.
-- **Tamattu' §5.2 baris 1–5** diekspansi jadi tahap eksplisit saat jadi `FLOWS` (IHRAM_UMRAH →
-  TAWAF_UMRAH → SAI_UMRAH → TAHALLUL_UMRAH), memakai-ulang tahap Umrah §5.1.
+- **Tamattu' §5.2 baris 1–5** diekspansi jadi tahap eksplisit di `Flows` (IHRAM_UMRAH → **KE_MAKKAH
+  (BusRide)** → TAWAF_UMRAH → SAI_UMRAH → TAHALLUL_UMRAH), memakai-ulang tahap Umrah §5.1.
+- **Bus miqat→Makkah (`KE_MAKKAH`, BusRide)** ada di **semua** alur, tepat sesudah ihram di miqat
+  dan sebelum tahap Makkah pertama (Umrah + 3 alur haji). Bus Armuzna belum jadi tahap eksplisit
+  (runner auto-teleport antar-Armuzna).
+- **`QURBAN` = tahap tersendiri** (ritual `Qurban`) **sebelum** `TAHALLUL_AWAL` pada alur ber-dam
+  (Tamattu' & Qiran); Ifrad tanpa qurban. Urutan fikih: Jumrah Aqabah → sembelih hadyu → cukur.
 - **`Stage.next`** diturunkan: tahap ritual = `on_ritual_done` (tunggu `mechanism.isDone()`);
   transisi/bus = `auto`/trigger zona.
-- **Qiran §5.4 tahap 11 (TAWAF_WADA)**: sel ritual kosong → isi `TawafCounter (7×)`.
 
 ### 5.6 Verifikasi alur vs acuan fikih ✅
 

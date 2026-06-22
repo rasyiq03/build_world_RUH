@@ -55,4 +55,18 @@ function ManasikState.isComplete(self: State): boolean
 	return self.index >= #self.flow
 end
 
+-- Serialisasi minimal untuk TeleportData (dipakai saat pindah place; bentuk disepakati dgn Devi §9).
+export type SaveData = { ibadahType: string, chosenMiqat: string, index: number }
+
+function ManasikState.serialize(self: State): SaveData
+	return { ibadahType = self.ibadahType, chosenMiqat = self.chosenMiqat, index = self.index }
+end
+
+-- Rekonstruksi state di place tujuan dari SaveData.
+function ManasikState.restore(data: SaveData): State
+	local s = ManasikState.new(data.ibadahType, data.chosenMiqat)
+	s.index = data.index or 1
+	return s
+end
+
 return ManasikState

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RUH · Mock-Roblox Visualizer</title>
+<style>
+  :root {
+    --bg: #0e1116; --panel: #161b22; --line: #232a34; --ink: #e6edf3; --dim: #8b949e;
+    --enter: #3fb950; --leave: #f0883e; --activate: #a371f7; --done: #2f81f7;
+    --print: #58a6ff; --warn: #f85149; --note: #d29922; --join: #39c5cf;
+    --bar: #2f81f7; --present: rgba(63,185,80,.16);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 14px/1.5 ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif; }
+  header { padding: 18px 22px; border-bottom: 1px solid var(--line); }
+  h1 { margin: 0 0 2px; font-size: 18px; }
+  h1 small { color: var(--dim); font-weight: 400; font-size: 13px; }
+  .sub { color: var(--dim); font-size: 13px; }
+  .wrap { display: grid; grid-template-columns: 1fr 360px; gap: 0; height: calc(100vh - 76px); }
+  @media (max-width: 820px){ .wrap { grid-template-columns: 1fr; height: auto; } }
+  .left { padding: 18px 22px; overflow: auto; }
+  .right { border-left: 1px solid var(--line); padding: 18px 20px; background: var(--panel); }
+
+  /* transport */
+  .transport { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  button.play { background: var(--bar); color: #fff; border: 0; border-radius: 7px;
+    padding: 8px 16px; font-size: 14px; cursor: pointer; font-weight: 600; }
+  button.play:hover { filter: brightness(1.1); }
+  .clock { font-variant-numeric: tabular-nums; color: var(--dim); min-width: 120px; }
+  input[type=range] { flex: 1; accent-color: var(--bar); }
+
+  /* progress + presence */
+  .gauges { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 18px; }
+  .gauge-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--dim);
+    margin-bottom: 4px; }
+  .track { height: 16px; background: #0b0e13; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .fill { height: 100%; width: 0; background: linear-gradient(90deg,#1f6feb,#3fb950); transition: width .12s linear; }
+  .pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .pill.in { background: rgba(63,185,80,.18); color: var(--enter); }
+  .pill.out { background: rgba(240,136,62,.18); color: var(--leave); }
+
+  /* timeline track (svg-ish bar) */
+  .axis { position: relative; height: 46px; margin: 6px 0 20px; }
+  .axis .rail { position: absolute; top: 20px; left: 0; right: 0; height: 4px; background: var(--line); border-radius: 2px; }
+  .axis .presentband { position: absolute; top: 14px; height: 16px; background: var(--present);
+    border-radius: 3px; }
+  .axis .ev { position: absolute; top: 16px; width: 10px; height: 10px; border-radius: 50%;
+    transform: translateX(-5px); border: 2px solid var(--bg); }
+  .axis .head { position: absolute; top: 6px; width: 2px; height: 32px; background: #fff;
+    box-shadow: 0 0 6px rgba(255,255,255,.6); transition: left .12s linear; }
+
+  /* event list */
+  .ev-list { list-style: none; margin: 0; padding: 0; }
+  .ev-list li { display: grid; grid-template-columns: 64px 14px 1fr; gap: 10px; align-items: start;
+    padding: 6px 8px; border-radius: 6px; opacity: .32; transition: opacity .1s, background .1s; }
+  .ev-list li.on { opacity: 1; }
+  .ev-list li.cur { background: #1c2531; }
+  .ev-list .t { color: var(--dim); font-variant-numeric: tabular-nums; text-align: right; font-size: 12px; padding-top:2px;}
+  .dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; }
+  .kind { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--dim); }
+  .txt { color: var(--ink); }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px 14px; margin-top: 14px; font-size: 12px; color: var(--dim); }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .legend i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--dim);
+    margin: 0 0 10px; }
+  .deeds li { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed var(--line); }
+  .empty { color: var(--warn); padding: 40px; text-align: center; }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="title">RUH · Mock-Roblox <small id="mech"></small></h1>
+  <div class="sub" id="meta"></div>
+</header>
+
+<div class="wrap" id="app" style="display:none">
+  <div class="left">
+    <div class="transport">
+      <button class="play" id="play">▶ Putar</button>
+      <span class="clock" id="clock">t = 0.0s</span>
+      <input type="range" id="scrub" min="0" max="100" value="100" step="0.1" />
+    </div>
+
+    <div class="gauges">
+      <div>
+        <div class="gauge-label"><span>Progres Wukuf</span><span id="pctlbl">0%</span></div>
+        <div class="track"><div class="fill" id="fill"></div></div>
+      </div>
+      <div>
+        <div class="gauge-label"><span>Kehadiran di Arafah</span><span id="preslbl"></span></div>
+      </div>
+    </div>
+
+    <div class="axis" id="axis">
+      <div class="rail"></div>
+      <div class="head" id="head"></div>
+    </div>
+
+    <ul class="ev-list" id="list"></ul>
+
+    <div class="legend" id="legend"></div>
+  </div>
+
+  <div class="right">
+    <h3>Amalan (WukufIbadah)</h3>
+    <ul class="deeds" id="deeds"></ul>
+    <h3 style="margin-top:22px">Ringkasan</h3>
+    <div class="sub" id="summary"></div>
+  </div>
+</div>
+
+<div class="empty" id="empty">
+  Belum ada data. Jalankan: <br><br>
+  <code>lune run .claude/skills/mock-roblox/harness/runner.luau .claude/skills/mock-roblox/scenarios/wukuf.luau</code>
+  <br><br>lalu segarkan halaman ini.
+</div>
+
+<script src="data.js"></script>
+<script>
+const KIND_COLORS = {
+  enter: getVar('--enter'), leave: getVar('--leave'), activate: getVar('--activate'),
+  deactivate: getVar('--dim'), isDone: getVar('--done'), print: getVar('--print'),
+  warn: getVar('--warn'), note: getVar('--note'), player_join: getVar('--join'),
+};
+function getVar(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+
+const RUN = window.RUN_DATA;
+if (!RUN || !RUN.events || !RUN.events.length) {
+  document.getElementById('empty').style.display = 'block';
+} else {
+  boot(RUN);
+}
+
+function boot(run){
+  document.getElementById('empty').style.display = 'none';
+  document.getElementById('app').style.display = 'grid';
+  const ev = run.events;
+  const T = run.meta.duration || ev[ev.length-1].t || 1;
+
+  document.getElementById('mech').textContent = '· ' + (run.meta.mechanism || '');
+  document.getElementById('title').firstChild.textContent = run.meta.title ? run.meta.title + ' ' : 'RUH · Mock-Roblox ';
+  document.getElementById('meta').textContent =
+    `${ev.length} event · durasi virtual ${T.toFixed(1)}s · skenario ${run.meta.scenario||''}`;
+
+  // Derive pct timeline + presence bands + deeds
+  const pctPts = [{t:0,pct:0}];
+  const presence = []; // {start,end}
+  let curIn = null;
+  const deeds = {};
+  for (const e of ev){
+    if (e.kind === 'print'){
+      const m = /Wukuf (\d+)%/.exec(e.data.text || '');
+      if (m) pctPts.push({t:e.t, pct:+m[1]});
+      const d = /^\[Notify→[^\]]+\]\s+(.+?) \((\d+)x\) — diterima/.exec(e.data.text||'');
+      if (d) deeds[d[1]] = +d[2];
+    }
+    if (e.kind === 'enter'){ if (curIn===null) curIn = e.t; }
+    if (e.kind === 'leave'){ if (curIn!==null){ presence.push({start:curIn,end:e.t}); curIn=null; } }
+  }
+  if (curIn!==null) presence.push({start:curIn,end:T});
+
+  // axis dots + presence bands
+  const axis = document.getElementById('axis');
+  for (const b of presence){
+    const band = document.createElement('div');
+    band.className = 'presentband';
+    band.style.left = (b.start/T*100)+'%';
+    band.style.width = ((b.end-b.start)/T*100)+'%';
+    axis.appendChild(band);
+  }
+  ev.forEach((e,i)=>{
+    const d = document.createElement('div');
+    d.className = 'ev';
+    d.style.left = (e.t/T*100)+'%';
+    d.style.background = KIND_COLORS[e.kind] || '#888';
+    d.title = `t=${e.t.toFixed(1)} ${e.kind}`;
+    axis.appendChild(d);
+  });
+
+  // event list
+  const list = document.getElementById('list');
+  ev.forEach((e,i)=>{
+    const li = document.createElement('li');
+    li.dataset.t = e.t; li.dataset.i = i;
+    const txt = e.data.text || JSON.stringify(e.data);
+    li.innerHTML =
+      `<span class="t">${e.t.toFixed(1)}s</span>`+
+      `<span class="dot" style="background:${KIND_COLORS[e.kind]||'#888'}"></span>`+
+      `<span><div class="kind">${e.kind}</div><div class="txt">${escapeHtml(txt)}</div></span>`;
+    list.appendChild(li);
+  });
+
+  // legend
+  const legend = document.getElementById('legend');
+  Object.entries(KIND_COLORS).forEach(([k,c])=>{
+    const s = document.createElement('span');
+    s.innerHTML = `<i style="background:${c}"></i>${k}`;
+    legend.appendChild(s);
+  });
+
+  // deeds panel
+  const deedsEl = document.getElementById('deeds');
+  const dk = Object.keys(deeds);
+  if (!dk.length) deedsEl.innerHTML = '<li class="sub">—</li>';
+  else dk.forEach(k=> deedsEl.insertAdjacentHTML('beforeend', `<li><span>${escapeHtml(k)}</span><b>${deeds[k]}x</b></li>`));
+
+  const doneEv = ev.filter(e=>e.kind==='isDone');
+  const sah = doneEv.some(e=>e.data.value===true);
+  document.getElementById('summary').innerHTML =
+    `Status akhir: <b style="color:${sah?getVar('--enter'):getVar('--warn')}">${sah?'Wukuf SAH ✓':'belum selesai'}</b><br>`+
+    `Total amalan: <b>${Object.values(deeds).reduce((a,b)=>a+b,0)}</b>`;
+
+  // playback
+  const head = document.getElementById('head');
+  const scrub = document.getElementById('scrub');
+  const clock = document.getElementById('clock');
+  const fill = document.getElementById('fill');
+  const pctlbl = document.getElementById('pctlbl');
+  const preslbl = document.getElementById('preslbl');
+  const btn = document.getElementById('play');
+
+  function pctAt(t){
+    let p = 0;
+    for (const q of pctPts){ if (q.t<=t) p=q.pct; else break; }
+    return p;
+  }
+  function presentAt(t){ return presence.some(b=> t>=b.start && t<b.end); }
+
+  function render(t){
+    head.style.left = (t/T*100)+'%';
+    clock.textContent = `t = ${t.toFixed(1)}s`;
+    const p = pctAt(t);
+    fill.style.width = p+'%'; pctlbl.textContent = p+'%';
+    const inside = presentAt(t);
+    preslbl.innerHTML = `<span class="pill ${inside?'in':'out'}">${inside?'DI ARAFAH':'di luar'}</span>`;
+    [...list.children].forEach(li=>{
+      const lt = +li.dataset.t;
+      li.classList.toggle('on', lt<=t+1e-6);
+    });
+    // highlight current (last <= t)
+    let curIdx=-1;
+    ev.forEach((e,i)=>{ if(e.t<=t+1e-6) curIdx=i; });
+    [...list.children].forEach((li,i)=> li.classList.toggle('cur', i===curIdx));
+  }
+
+  let playing=false, raf=null, t0=0, startT=0;
+  function tick(ts){
+    if(!playing) return;
+    if(!t0) t0=ts;
+    const elapsed = (ts-t0)/1000 * 6; // 6x speed
+    let t = startT + elapsed;
+    if (t>=T){ t=T; playing=false; btn.textContent='▶ Putar'; }
+    scrub.value = (t/T*100);
+    render(t);
+    if(playing) raf=requestAnimationFrame(tick);
+  }
+  btn.onclick=()=>{
+    if(playing){ playing=false; btn.textContent='▶ Putar'; cancelAnimationFrame(raf); }
+    else {
+      if (+scrub.value>=99.9){ scrub.value=0; }
+      startT = (+scrub.value)/100*T; t0=0; playing=true; btn.textContent='⏸ Jeda';
+      raf=requestAnimationFrame(tick);
+    }
+  };
+  scrub.oninput=()=>{ playing=false; btn.textContent='▶ Putar'; render((+scrub.value)/100*T); };
+
+  render(T); // start showing final state
+}
+
+function escapeHtml(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+</script>
+</body>
+</html>
