@@ -20,6 +20,7 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Notify = require(script.Parent.Parent.Notify)
+local Kit = require(script.Parent._MechanismKit)
 
 local M = {}
 M.id = "Qurban"
@@ -50,15 +51,6 @@ local function notify(msg: string)
 	if player then
 		Notify.toPlayer(player, msg)
 	end
-end
-
-local function disconnectAll()
-	for _, c in ipairs(conns) do
-		if c and c.Disconnect then
-			c:Disconnect()
-		end
-	end
-	table.clear(conns)
 end
 
 local function placePenanda()
@@ -137,22 +129,11 @@ function M.activate(ctx: any?)
 	if not station then
 		warn("[Qurban] tanpa ctx.station — tanpa ProximityPrompt (logika tetap via M.beginSacrifice).")
 	else
-		-- Buat prompt + sambung Triggered dalam satu pcall (kelas/signal mungkin tak ada headless).
-		local ok = pcall(function()
-			local p = Instance.new("ProximityPrompt")
-			p.ActionText = "Sembelih Hadyu"
-			p.ObjectText = "Tempat Qurban"
-			p.MaxActivationDistance = 18
-			p.Parent = station
-			conns[#conns + 1] = p.Triggered:Connect(function(plr)
-				if not player or plr == player then
-					M.beginSacrifice(nil)
-				end
-			end)
+		conns[#conns + 1] = Kit.attachPrompt(station, "Sembelih Hadyu", "Tempat Qurban", 18, function(plr)
+			if not player or plr == player then
+				M.beginSacrifice(nil)
+			end
 		end)
-		if not ok then
-			warn("[Qurban] ProximityPrompt tak tersedia (headless) — pakai M.beginSacrifice.")
-		end
 	end
 
 	conns[#conns + 1] = RunService.Heartbeat:Connect(function(dt)
@@ -165,7 +146,7 @@ end
 function M.deactivate()
 	active = false
 	processing = false
-	disconnectAll()
+	Kit.disconnectAll(conns)
 end
 
 function M.isDone(): boolean

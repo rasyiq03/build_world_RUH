@@ -11,6 +11,7 @@
 
 local Notify = require(script.Parent.Parent.Notify)
 local Players = game:GetService("Players")
+local Kit = require(script.Parent._MechanismKit)
 
 local M = {}
 M.id = "IhramHaji"
@@ -20,15 +21,6 @@ local performed = false
 local player: Player? = nil
 local station: BasePart? = nil
 local conns: { any } = {}
-
-local function disconnectAll()
-	for _, c in ipairs(conns) do
-		if c and c.Disconnect then
-			c:Disconnect()
-		end
-	end
-	table.clear(conns)
-end
 
 local function perform(p: Player)
 	if performed then
@@ -68,7 +60,7 @@ end
 
 function M.deactivate()
 	active = false
-	disconnectAll()
+	Kit.disconnectAll(conns)
 end
 
 function M.isDone(): boolean

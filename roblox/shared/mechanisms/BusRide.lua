@@ -20,6 +20,7 @@
 
 local RunService = game:GetService("RunService")
 local Notify = require(script.Parent.Parent.Notify)
+local Kit = require(script.Parent._MechanismKit)
 
 local M = {}
 M.id = "BusRide"
@@ -41,15 +42,6 @@ local function notify(msg: string)
 	if player then
 		Notify.toPlayer(player, msg)
 	end
-end
-
-local function disconnectAll()
-	for _, c in ipairs(conns) do
-		if c and c.Disconnect then
-			c:Disconnect()
-		end
-	end
-	table.clear(conns)
 end
 
 -- API publik: pemain naik bus (dipanggil ProximityPrompt / skenario).
@@ -91,21 +83,11 @@ function M.activate(ctx: any?)
 	-- Pasang ProximityPrompt di pintu bus (game asli). Headless: busPart boleh nil.
 	local busPart = ctx and ctx.busPart
 	if busPart then
-		local ok = pcall(function()
-			local p = Instance.new("ProximityPrompt")
-			p.ActionText = "Naik Bus"
-			p.ObjectText = "Bus ke " .. destination
-			p.MaxActivationDistance = 14
-			p.Parent = busPart
-			conns[#conns + 1] = p.Triggered:Connect(function(plr)
-				if not player or plr == player then
-					M.board()
-				end
-			end)
+		conns[#conns + 1] = Kit.attachPrompt(busPart, "Naik Bus", "Bus ke " .. destination, 14, function(plr)
+			if not player or plr == player then
+				M.board()
+			end
 		end)
-		if not ok then
-			warn("[BusRide] ProximityPrompt tak tersedia (headless) — pakai M.board.")
-		end
 	else
 		warn("[BusRide] tanpa ctx.busPart — tanpa ProximityPrompt (logika tetap via M.board).")
 	end
@@ -125,7 +107,7 @@ end
 function M.deactivate()
 	active = false
 	riding = false
-	disconnectAll()
+	Kit.disconnectAll(conns)
 end
 
 function M.isDone(): boolean

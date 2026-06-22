@@ -18,6 +18,7 @@
 
 local Notify = require(script.Parent.Parent.Notify)
 local Players = game:GetService("Players")
+local Kit = require(script.Parent._MechanismKit)
 
 local M = {}
 M.id = "Tahallul"
@@ -53,15 +54,6 @@ function M.modeForStage(stageId: string): string
 		return "awal"
 	end
 	return "umrah" -- TAHALLUL, TAHALLUL_UMRAH
-end
-
-local function disconnectAll()
-	for _, c in ipairs(conns) do
-		if c and c.Disconnect then
-			c:Disconnect()
-		end
-	end
-	table.clear(conns)
 end
 
 local function perform(p: Player)
@@ -115,7 +107,7 @@ end
 
 function M.deactivate()
 	active = false
-	disconnectAll()
+	Kit.disconnectAll(conns)
 end
 
 function M.isDone(): boolean

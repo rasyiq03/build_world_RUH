@@ -13,6 +13,7 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Notify = require(script.Parent.Parent.Notify)
+local Kit = require(script.Parent._MechanismKit)
 
 local M = {}
 M.id = "Mabit"
@@ -28,15 +29,6 @@ local halfway = false
 local player: Player? = nil
 local label = "Mina"
 local conns: { any } = {}
-
-local function disconnectAll()
-	for _, c in ipairs(conns) do
-		if c and c.Disconnect then
-			c:Disconnect()
-		end
-	end
-	table.clear(conns)
-end
 
 function M.init() end
 
@@ -105,7 +97,7 @@ end
 function M.deactivate()
 	active = false
 	present = false
-	disconnectAll()
+	Kit.disconnectAll(conns)
 end
 
 function M.isDone(): boolean

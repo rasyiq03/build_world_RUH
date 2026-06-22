@@ -24,6 +24,7 @@
 
 local Players = game:GetService("Players")
 local Notify = require(script.Parent.Parent.Notify)
+local Kit = require(script.Parent._MechanismKit)
 
 local M = {}
 M.id = "JumrahThrow"
@@ -60,15 +61,6 @@ local function notify(msg: string)
 	if player then
 		Notify.toPlayer(player, msg)
 	end
-end
-
-local function disconnectAll()
-	for _, c in ipairs(conns) do
-		if c and c.Disconnect then
-			c:Disconnect()
-		end
-	end
-	table.clear(conns)
 end
 
 local function resetDay()
@@ -206,22 +198,11 @@ function M.activate(ctx: any?)
 			if PILLAR_LABEL[name] == nil then
 				warn("[JumrahThrow] nama pilar tak dikenal di ctx.pillars: " .. tostring(name))
 			else
-				-- Buat prompt + sambung Triggered dalam satu pcall (kelas/signal mungkin tak ada headless).
-				local ok = pcall(function()
-					local p = Instance.new("ProximityPrompt")
-					p.ActionText = "Lempar " .. PILLAR_LABEL[name]
-					p.ObjectText = PILLAR_LABEL[name]
-					p.MaxActivationDistance = 18
-					p.Parent = part
-					conns[#conns + 1] = p.Triggered:Connect(function(plr)
-						if not player or plr == player then
-							M.throw(name)
-						end
-					end)
+				conns[#conns + 1] = Kit.attachPrompt(part, "Lempar " .. PILLAR_LABEL[name], PILLAR_LABEL[name], 18, function(plr)
+					if not player or plr == player then
+						M.throw(name)
+					end
 				end)
-				if not ok then
-					warn("[JumrahThrow] ProximityPrompt tak tersedia (headless) — pakai M.throw.")
-				end
 			end
 		end
 	end
@@ -236,7 +217,7 @@ end
 function M.deactivate()
 	active = false
 	awaitingNafar = false
-	disconnectAll()
+	Kit.disconnectAll(conns)
 end
 
 function M.isDone(): boolean

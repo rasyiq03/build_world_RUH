@@ -15,6 +15,7 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Notify = require(script.Parent.Parent.Notify)
 local WukufIbadah = require(script.Parent.WukufIbadah)
+local Kit = require(script.Parent._MechanismKit)
 
 local M = {}
 M.id = "Wukuf"
@@ -29,15 +30,6 @@ local present = false
 local player: Player? = nil
 local lastMilestone = -1
 local conns: { any } = {}
-
-local function disconnectAll()
-	for _, c in ipairs(conns) do
-		if c and c.Disconnect then
-			c:Disconnect()
-		end
-	end
-	table.clear(conns)
-end
 
 function M.init()
 	-- Tanpa side-effect saat load; zona dipasang di activate (butuh ctx).
@@ -119,7 +111,7 @@ end
 function M.deactivate()
 	active = false
 	present = false
-	disconnectAll()
+	Kit.disconnectAll(conns)
 	WukufIbadah.deactivate()
 end
 
