@@ -22,6 +22,8 @@ local RunService = game:GetService("RunService")
 local Notify = require(script.Parent.Parent.Notify)
 local Kit = require(script.Parent._MechanismKit)
 
+local Ctx = require(script.Parent.Parent.Ctx)
+
 local M = {}
 M.id = "Qurban"
 
@@ -106,7 +108,7 @@ end
 
 function M.init() end
 
-function M.activate(ctx: any?)
+function M.activate(ctx: Ctx.Qurban?)
 	active = true
 	done = false
 	processing = false

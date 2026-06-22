@@ -8,9 +8,9 @@ Definisi input/output & perilaku `convert_terrain.py`. Implementasi harus mematu
 {
   "input_tif": "data/output_srtm.tif",
   "output_dir": "output",
-  "scale_studs_per_m": 2.0,
-  "box_width_km": 26.0,
-  "box_height_km": 16.0,
+  "scale_studs_per_m": 4.0,
+  "box_width_km": 26.286,
+  "box_height_km": 19.636,
   "nodata_threshold": -500.0,
   "overlap_px": 1,
   "max_tile_studs": 16384,

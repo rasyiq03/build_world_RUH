@@ -10,7 +10,7 @@
   "box_width_km": 26.286,
   "box_height_km": 19.636,
 
-  "_zones_note": "Crop multi-place per zona, skala 4, norm GLOBAL. box=[lon_min,lat_min,lon_max,lat_max] (content-driven, PROPOSAL — sesuaikan dari Google Maps spt Mina). A_Makkah=inti Masjidil Haram+kota; B_Mina=inti Mina (sudah jadi); C_Arafah=padang Arafah+Jabal Rahmah. Muzdalifah (21.383,39.937) ditunda sbg zona tersendiri bila perlu.",
+  "_zones_note": "Crop multi-place per zona, skala 4, norm GLOBAL. box=[lon_min,lat_min,lon_max,lat_max] (content-driven, PROPOSAL — sesuaikan dari Google Maps spt Mina). A_Makkah=inti Masjidil Haram+kota; B_Mina=inti Mina; C_Arafah=padang Arafah+Jabal Rahmah; D_Muzdalifah=Masy'aril Haram + area mabit/kerikil (paritas penuh: generate_muzdalifah.py + build_muzdalifah.lua).",
   "zones": [
     { "name": "A_Makkah", "box": [39.806000, 21.404000, 39.846000, 21.441000] },
     { "name": "B_Mina",   "box": [39.862000, 21.401000, 39.900000, 21.425000] },

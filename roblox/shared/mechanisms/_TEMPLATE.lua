@@ -3,7 +3,9 @@
 -- Salin file ini, ganti nama (TANPA awalan "_"), isi bodinya.
 -- MechanismRegistry memuat semua file di folder ini KECUALI yang berawalan "_".
 --
--- ctx = { state = ManasikState, player = Player, place = string, ... } (disusun pemanggil).
+-- ctx = { player = Player, place = string, ... } (disusun pemanggil = server/PlaceContext).
+-- TIPE ctx: definisikan/ pakai dari shared/Ctx.lua (mis. `function M.activate(ctx: Ctx.Tawaf?)`),
+-- supaya salah-eja field ketahuan luau-analyze. Mekanisme baru: tambah tipe di Ctx.lua lalu pakai.
 
 local M = {}
 

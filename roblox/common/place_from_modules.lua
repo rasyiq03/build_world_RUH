@@ -1,5 +1,13 @@
 --[[ place_from_modules.lua — Command Bar Studio (KECIL, baca data dari ModuleScript)
 
+  ★ SKRIP KANONIK untuk bangunan/pembatas/tenda Mina dari OSM. Menggantikan skrip lama
+    `place_osm_buildings.lua` & `place_tents.lua` (pendekatan tempel-inline → bloat & kena batas
+    100k Command Bar). Data kini di ModuleScript (lihat to_roblox_module.py + docs/WORLD_PIPELINE.md).
+
+  CATATAN vs build_mina.lua: build_mina sudah membuat TERAS+TENDA (MinaTerraces), PEMBATAS
+  (MinaBarriers), Jamarat, Lampu. Skrip ini terutama untuk lapisan BANGUNAN OSM (MinaBuildings).
+  Bagian pembatas/tenda di sini TUMPANG-TINDIH dgn build_mina — jangan jalankan keduanya utk hal sama.
+
   Membangun bangunan fasad + pembatas + tenda Mina dengan membaca data dari
   ModuleScript di ReplicatedStorage (hindari batas 100.000 karakter Command Bar).
 

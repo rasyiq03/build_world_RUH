@@ -15,6 +15,8 @@ local Players = game:GetService("Players")
 local Notify = require(script.Parent.Parent.Notify)
 local Kit = require(script.Parent._MechanismKit)
 
+local Ctx = require(script.Parent.Parent.Ctx)
+
 local M = {}
 M.id = "PebbleCollect"
 
@@ -29,7 +31,7 @@ local conns: { any } = {}
 
 function M.init() end
 
-function M.activate(ctx: any?)
+function M.activate(ctx: Ctx.Pebble?)
 	active = true
 	collected = 0
 	picked = {}

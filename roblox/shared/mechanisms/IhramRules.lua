@@ -18,6 +18,8 @@
 
 local Notify = require(script.Parent.Parent.Notify)
 
+local Ctx = require(script.Parent.Parent.Ctx)
+
 local M = {}
 M.id = "IhramRules"
 
@@ -113,7 +115,7 @@ end
 function M.init() end
 
 -- activate = pemain MASUK keadaan ihram (dipanggil setelah niat / oleh skrip place).
-function M.activate(ctx: any?)
+function M.activate(ctx: Ctx.IhramRules?)
 	inIhram = true
 	violations = 0
 	damCount = 0

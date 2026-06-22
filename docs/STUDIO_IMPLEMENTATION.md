@@ -86,7 +86,7 @@ Lakukan ini untuk **tiap** place yang kamu pegang:
 | `Miqat_DzatuIrq` | **Nabil** | `common/build_miqat.lua` | `Workspace.Bus` |
 | `Miqat_Juhfah` | **Nabil** | `common/build_miqat.lua` | `Workspace.Bus` |
 | `Arafah` | **Nabil** | `C_Arafah/build_arafah.lua` | `Workspace.C_Arafah.BatasArafah` |
-| `Muzdalifah` | **Nabil** | (terrain saja) | kerikil dibuat otomatis PlaceContext (cincin) |
+| `Muzdalifah` | **Nabil** | `D_Muzdalifah/build_muzdalifah.lua` | `D_Muzdalifah.AreaKerikil` (kerikil disebar di sini) |
 | `Miqat_QarnulManazil` | **Praditama** | `common/build_miqat.lua` | `Workspace.Bus` |
 | `Miqat_Yalamlam` | **Praditama** | `common/build_miqat.lua` | `Workspace.Bus` |
 | `Mina` | **Praditama** | `B_Mina/build_mina.lua` | `Workspace.Jamarat.Jamratul_Ula/Wusta/Aqabah`, `Workspace.TempatQurban` |
@@ -139,8 +139,10 @@ WukufIbadah/Tahallul) sudah ada & teruji.
 1. **Arafah:** place `Arafah` (default state dev = Arafah, paling mudah diuji). Impor terrain →
    Command Bar **`C_Arafah/build_arafah.lua`** → membuat `Workspace.C_Arafah.BatasArafah` yang
    dibaca `PlaceContext.Arafah` jadi **zona kehadiran Wukuf**. Tanpa itu → Wukuf tanpa gating zona.
-2. **Muzdalifah:** place `Muzdalifah`. Terrain saja cukup — `PlaceContext.Muzdalifah` menyebar **7
-   kerikil** otomatis dalam cincin di origin (PebbleCollect). Tambah model `Masy'aril Haram` (CG).
+2. **Muzdalifah:** place `Muzdalifah`, `PlaceName = "Muzdalifah"`. Impor terrain → Command Bar
+   **`D_Muzdalifah/build_muzdalifah.lua`** → membuat `D_Muzdalifah.{MasyarilHaram, AreaKerikil,
+   BatasMuzdalifah, Fasilitas}` (data dari `generate_muzdalifah.py`). `WorldProviders.muzdalifahPebbles`
+   menyebar hamparan kerikil **di region `AreaKerikil`** (PebbleCollect; 7 dipungut/pemain).
 3. **2 Miqat (Dzatu 'Irq, Juhfah):** seperti resep §2; tambah part `Bus`.
 4. **Tahallul (lintas-area):** modul `Tahallul` dipakai di Makkah (umrah, area Devi) & Mina (haji).
    Ia menyimpan atribut pemain **`TahallulState`** (`IHRAM`/`AWAL`/`COMPLETE`) yang **dibaca

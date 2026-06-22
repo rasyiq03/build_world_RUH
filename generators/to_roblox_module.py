@@ -9,14 +9,14 @@ Skrip ini mengubah JSON (compact) jadi file .lua berisi:  return [==[ <json> ]==
 
 Pemakaian:
   python to_roblox_module.py --zone B_Mina
-    -> output/B_Mina/MinaBuildings.module.lua  (dari osm_buildings_corridor.json)
-       output/B_Mina/MinaBarriers.module.lua   (dari osm_barriers.json)
-       output/B_Mina/MinaTents.module.lua       (dari mina_tents.json)
+    -> satu .module.lua per entri MAPS zona (lihat dict MAPS di bawah; file sumber yang belum ada
+       dilewati). B_Mina mis.: MinaTerraces, MinaBarriers, MinaJamarat, MinaLamps, MinaTents,
+       MinaBuildings, MinaRoute.
 
 Di Studio:
-  1. Buat ModuleScript di ReplicatedStorage bernama: MinaBuildings, MinaBarriers, MinaTents.
+  1. Buat ModuleScript di ReplicatedStorage bernama PERSIS seperti kunci MAPS (mis. MinaTents).
   2. Buka tiap ModuleScript (double-click) -> tempel SELURUH isi file .lua yang sesuai.
-  3. Jalankan roblox/common/place_from_modules.lua di Command Bar (kecil, baca module).
+  3. Jalankan skrip build/place terkait di Command Bar (mis. roblox/common/place_from_modules.lua).
 """
 
 from __future__ import annotations
@@ -33,6 +33,8 @@ MAPS = {
         "MinaBarriers": "guardline.json",
         "MinaJamarat": "jamarat.json",
         "MinaLamps": "lamps.json",
+        "MinaTents": "mina_tents.json",  # dibaca place_tents / place_from_modules
+        "MinaBuildings": "osm_buildings_corridor.json",  # fasad koridor; dibaca place_from_modules
         "MinaRoute": "route_local.json",
     },
     "C_Arafah": {
@@ -47,6 +49,13 @@ MAPS = {
         "MakkahLandmarks": "makkah_landmarks.json",
         "MakkahFacade": "makkah_facade.json",
         "MakkahRoute": "route_local.json",
+    },
+    "D_Muzdalifah": {
+        "MuzdalifahMasyaril": "masyaril_haram.json",
+        "MuzdalifahBoundary": "boundary.json",
+        "MuzdalifahPebbleArea": "pebble_area.json",  # region kerikil; dibaca WorldProviders
+        "MuzdalifahFacilities": "facilities.json",
+        "MuzdalifahRoute": "route_local.json",
     },
 }
 

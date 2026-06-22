@@ -79,10 +79,11 @@ python generators/generate_osm.py --zone B_Mina              # tarik OSM -> osm_
 Output (di `output/B_Mina/`): `osm_roads.json` (polyline jalan, X/Z studs) &
 `osm_buildings.json` (poligon bangunan, footprint asli OSM).
 
-Lalu di Studio (SETELAH terrain zona ter-generate): tempel isi `osm_buildings.json`
-ke `roblox/common/place_osm_buildings.lua`, jalankan di Command Bar → dinding
-keliling tiap bangunan dibangun via **raycast ke terrain** (bentuk asli, siap
-di-texture). Geometri polos dulu; detail/atap/material menyusul.
+Lalu bungkus jadi ModuleScript (`python generators/to_roblox_module.py --zone B_Mina` →
+`MinaBuildings`), dan di Studio (SETELAH terrain zona ter-generate) jalankan
+`roblox/common/place_from_modules.lua` di Command Bar → dinding keliling tiap bangunan
+dibangun via **raycast ke terrain** (bentuk asli, siap di-texture). Geometri polos dulu;
+detail/atap/material menyusul. (Skrip lama `place_osm_buildings.lua` tempel-inline sudah dihapus.)
 
 > **Tenda Mina** umumnya TIDAK dipetakan satuan di OSM. Tenda = penempatan
 > **prosedural** (grid/baris di lembah) sebagai **instance 1-mesh** (Fase 2),

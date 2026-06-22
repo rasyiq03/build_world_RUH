@@ -20,6 +20,7 @@
 
 local RunService = game:GetService("RunService")
 local Notify = require(script.Parent.Parent.Notify)
+local Ctx = require(script.Parent.Parent.Ctx)
 
 local M = {}
 M.id = "SaiCounter"
@@ -112,7 +113,7 @@ end
 
 function M.init() end
 
-function M.activate(ctx: any?)
+function M.activate(ctx: Ctx.Sai?)
 	active = true
 	done = false
 	trips = 0

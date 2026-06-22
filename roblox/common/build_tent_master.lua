@@ -1,12 +1,13 @@
 --[[ build_tent_master.lua — Command Bar Studio
   Membuat 1 mesh tenda "TentMaster" TANPA software 3D luar: bangun dari Part +
   WedgePart (atap pelana), lalu Union -> SATU objek (UnionOperation). Hasilnya
-  ditaruh di ReplicatedStorage, siap dipakai place_tents.lua (di-Clone per titik).
+  ditaruh di ReplicatedStorage, siap di-Clone per titik oleh build_mina.lua (via MinaTerraces)
+  atau place_from_modules.lua (via MinaTents).
 
   Cara: tempel skrip ini ke Command Bar (View > Command Bar), Enter.
-  Lalu jalankan place_tents.lua.
+  Lalu jalankan build_mina.lua / place_from_modules.lua (yang menyebar tenda).
 
-  Ukuran dalam studs (skala 2 = 8 m tenda). Ubah konstanta sesuai selera.
+  Ukuran dalam studs (skala 4 = 4 m/studs). Ubah konstanta sesuai selera.
 ]]
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -54,9 +55,9 @@ tent.Anchored = true
 tent.Material = Enum.Material.Fabric
 tent.Color = TENT_COLOR
 tent.UsePartColor = true
--- Pindahkan origin ke dasar tenda biar place_tents gampang (opsional: biarkan center).
+-- Origin di center (penyebar tenda di build_mina/place_from_modules sudah menghitung offset pivot).
 tent.Parent = ReplicatedStorage
 
 print(("[Tenda] TentMaster dibuat (Union) di ReplicatedStorage. Size = %s. "):format(tostring(tent.Size))
-	.. "Lanjut: jalankan place_tents.lua.")
+	.. "Lanjut: jalankan build_mina.lua / place_from_modules.lua (yang menyebar tenda).")
 print("Jika atap terbalik, tukar tanda Z kedua wedge atau putar 180° lalu jalankan ulang.")

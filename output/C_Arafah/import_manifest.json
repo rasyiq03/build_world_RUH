@@ -1,0 +1,152 @@
+{
+  "generator": "convert_terrain.py (RUH Main Place terrain pipeline)",
+  "scale_studs_per_m": 4,
+  "origin": "center-of-route",
+  "flip_z": false,
+  "elevation_min_m": 128,
+  "elevation_max_m": 960,
+  "elevation_delta_m": 832,
+  "size_y_studs": 3328,
+  "position_y_studs": -1664,
+  "world_size_studs": {
+    "x": 18656,
+    "z": 16944
+  },
+  "tiles_x": 2,
+  "tiles_z": 2,
+  "overlap_px": 1,
+  "voxels_per_tile": 4109394432,
+  "max_tile_voxels": 4200000000,
+  "voxel_note": "Roblox Terrain Importer membatasi volume satu impor (~jumlah voxel 4x4x4). voxels = (Size.X/4)*(Size.Y/4)*(Size.Z/4) <= max_tile_voxels. Grid dipilih agar tile sesedikit mungkin namun tetap di bawah budget.",
+  "overlap_note": "Tile bersebelahan berbagi overlap_px piksel tepi pada heightmap (elevasi di garis sambung identik). Size/Position studs dihitung edge-to-edge dari box & scale (SPEC §4); importer me-resample PNG.",
+  "notes": [
+    "voxel_align: Size disnap ke kelipatan 8 studs; dunia 18661.7x16945.4 -> 18656x16944, Size_Y 3328 -> 3328 (geser <0.03%).",
+    "Tinggi DEM 137px tidak habis dibagi 2 tile; sisa 1px diserap ke tile Z terakhir."
+  ],
+  "tiles": [
+    {
+      "file": "RUH_tile_x0_z0.png",
+      "tile_index": {
+        "ix": 0,
+        "iz": 0
+      },
+      "pixels": {
+        "w": 82,
+        "h": 69
+      },
+      "pixel_bounds": {
+        "x0": 0,
+        "x1": 82,
+        "z0": 0,
+        "z1": 69
+      },
+      "size": {
+        "x": 9328,
+        "y": 3328,
+        "z": 8472
+      },
+      "position": {
+        "x": -4664,
+        "y": -1664,
+        "z": -4236
+      },
+      "voxels": 4109394432,
+      "material": "Sandstone"
+    },
+    {
+      "file": "RUH_tile_x1_z0.png",
+      "tile_index": {
+        "ix": 1,
+        "iz": 0
+      },
+      "pixels": {
+        "w": 81,
+        "h": 69
+      },
+      "pixel_bounds": {
+        "x0": 81,
+        "x1": 162,
+        "z0": 0,
+        "z1": 69
+      },
+      "size": {
+        "x": 9328,
+        "y": 3328,
+        "z": 8472
+      },
+      "position": {
+        "x": 4664,
+        "y": -1664,
+        "z": -4236
+      },
+      "voxels": 4109394432,
+      "material": "Sandstone"
+    },
+    {
+      "file": "RUH_tile_x0_z1.png",
+      "tile_index": {
+        "ix": 0,
+        "iz": 1
+      },
+      "pixels": {
+        "w": 82,
+        "h": 69
+      },
+      "pixel_bounds": {
+        "x0": 0,
+        "x1": 82,
+        "z0": 68,
+        "z1": 137
+      },
+      "size": {
+        "x": 9328,
+        "y": 3328,
+        "z": 8472
+      },
+      "position": {
+        "x": -4664,
+        "y": -1664,
+        "z": 4236
+      },
+      "voxels": 4109394432,
+      "material": "Sandstone"
+    },
+    {
+      "file": "RUH_tile_x1_z1.png",
+      "tile_index": {
+        "ix": 1,
+        "iz": 1
+      },
+      "pixels": {
+        "w": 81,
+        "h": 69
+      },
+      "pixel_bounds": {
+        "x0": 81,
+        "x1": 162,
+        "z0": 68,
+        "z1": 137
+      },
+      "size": {
+        "x": 9328,
+        "y": 3328,
+        "z": 8472
+      },
+      "position": {
+        "x": 4664,
+        "y": -1664,
+        "z": 4236
+      },
+      "voxels": 4109394432,
+      "material": "Sandstone"
+    }
+  ],
+  "geo_bounds": {
+    "lon_min": 39.954861111140254,
+    "lat_min": 21.337083333328213,
+    "lon_max": 39.99986111114026,
+    "lat_max": 21.375138888883775
+  },
+  "geo_note": "Petakan OSM lon/lat -> studs: x = (lon-lon_min)/(lon_max-lon_min)*world_size.x - world_size.x/2; z = (lat_max-lat)/(lat_max-lat_min)*world_size.z - world_size.z/2 (balik tanda z bila flip_z=true). Origin di tengah (0,0).",
+  "zone": "C_Arafah"
+}

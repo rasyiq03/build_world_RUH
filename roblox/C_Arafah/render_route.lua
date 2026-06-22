@@ -3,8 +3,8 @@
   Tiap ruas di-SUBDIVIDE & raycast tiap ~STEP studs → jalan MENJUNTAI mengikuti
   terrain (tak terendam/melayang). Ruas TEROWONGAN aspal gelap. Penanda KELUAR kuning.
 
-  Prasyarat: ModuleScript "ArafahRoute" di ReplicatedStorage; terrain Mina sudah ada.
-  Jalankan SETELAH build_mina.lua (biar terrain teras sudah final).
+  Prasyarat: ModuleScript "ArafahRoute" di ReplicatedStorage; terrain Arafah sudah ada.
+  Jalankan SETELAH build_arafah.lua (biar terrain & area sudah final).
 ]]
 
 local HttpService = game:GetService("HttpService")
@@ -16,6 +16,11 @@ local STEP = 30          -- jarak subdivide (studs) — makin kecil makin menjun
 local LIFT = 0.6         -- naik tipis di atas tanah
 local COL_ROAD = Color3.fromRGB(58, 58, 64)
 local COL_TUNNEL = Color3.fromRGB(34, 34, 42)
+-- CARVE koridor: potong terrain agar jalan RATA & tak terbenam di lereng menyamping (tanpa ini,
+-- jalan lebar ditaruh datar → separuh masuk bukit). FillBlock Air di atas + Sand roadbed di bawah.
+local CARVE_ROAD = true  -- false = perilaku lama (drape saja, tanpa potong terrain)
+local CARVE_UP = 40      -- buang terrain di ATAS permukaan jalan (sisi tanjakan), studs
+local FILL_DOWN = 28     -- isi roadbed di BAWAH permukaan jalan (sisi lembah), studs
 
 local m = RS:FindFirstChild("ArafahRoute")
 if not m then warn("[Route] ModuleScript 'ArafahRoute' tak ada."); return end
@@ -37,10 +42,18 @@ folder = Instance.new("Folder"); folder.Name = "Arafah_Route"; folder.Parent = w
 local function slab(va, vb, tunnel, parent)
 	local d = (va - vb).Magnitude
 	if d < 0.05 then return end
+	local cf = CFrame.lookAt((va + vb) / 2, vb) -- sumbu Z = arah jalan, X = lebar
+	-- CARVE koridor terrain mengikuti orientasi cf (dijaga pcall; FillBlock hanya ada di Studio).
+	if CARVE_ROAD then
+		pcall(function()
+			terrain:FillBlock(cf * CFrame.new(0, CARVE_UP / 2, 0), Vector3.new(ROAD_W + 6, CARVE_UP, d + 1), Enum.Material.Air)
+			terrain:FillBlock(cf * CFrame.new(0, -FILL_DOWN / 2, 0), Vector3.new(ROAD_W, FILL_DOWN, d + 1), Enum.Material.Sand)
+		end)
+	end
 	local p = Instance.new("Part")
 	p.Anchored = true
 	p.Size = Vector3.new(ROAD_W, 2, d + 1)   -- +1 overlap antar-potongan biar mulus
-	p.CFrame = CFrame.lookAt((va + vb) / 2, vb)
+	p.CFrame = cf
 	p.Material = tunnel and Enum.Material.Slate or Enum.Material.Asphalt
 	p.Color = tunnel and COL_TUNNEL or COL_ROAD
 	p.Name = tunnel and "Tunnel" or "Road"

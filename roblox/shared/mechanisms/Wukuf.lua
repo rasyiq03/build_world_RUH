@@ -17,6 +17,8 @@ local Notify = require(script.Parent.Parent.Notify)
 local WukufIbadah = require(script.Parent.WukufIbadah)
 local Kit = require(script.Parent._MechanismKit)
 
+local Ctx = require(script.Parent.Parent.Ctx)
+
 local M = {}
 M.id = "Wukuf"
 
@@ -35,7 +37,7 @@ function M.init()
 	-- Tanpa side-effect saat load; zona dipasang di activate (butuh ctx).
 end
 
-function M.activate(ctx: any?)
+function M.activate(ctx: Ctx.Wukuf?)
 	active = true
 	done = false
 	elapsed = 0

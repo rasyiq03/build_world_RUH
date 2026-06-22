@@ -1,0 +1,4 @@
+-- ModuleScript: MakkahLandmarks (auto-generated dari makkah_landmarks.json)
+-- Buat ModuleScript bernama 'MakkahLandmarks' di ReplicatedStorage, tempel SELURUH
+-- isi file ini ke dalamnya (lewat EDITOR SKRIP, bukan Command Bar).
+return [==[{"kaaba":{"center":{"x":86.13,"z":-9.12},"size":{"w":44,"l":51,"h":52},"rot":30,"hajar_aswad_corner":"timur","door_side":"timur-laut"},"mataf":{"center":{"x":86.13,"z":-9.12},"radius":200},"maqam_ibrahim":{"x":86.13,"z":-61.12,"dome_d":12},"hijr_ismail":{"center":{"x":86.13,"z":-45.12},"radius":34,"wall_h":5},"masaa":{"safa":{"x":606.13,"z":790.88},"marwah":{"x":606.13,"z":-809.12},"width":80,"green_zone":[-120,120]},"clock_tower":{"x":-133.87,"z":1718.88,"height":2404,"clock_color":[120,255,140]},"gates":[{"name":"King_Abdulaziz_Gate","x":86.13,"z":750.88},{"name":"King_Fahd_Gate","x":-673.87,"z":-9.12},{"name":"Umrah_Gate","x":846.13,"z":-9.12},{"name":"Fath_Gate","x":86.13,"z":-769.12}]}]==]
