@@ -52,4 +52,20 @@ function Registry.isActiveDone(): boolean
 	return true
 end
 
+-- Time-skip mekanisme aktif (bila mendukung, mis. Wukuf/Mabit). Dipanggil dari RemoteEvent UI pemain.
+function Registry.timeSkipActive()
+	if Registry._active and Registry._active.timeSkip then
+		Registry._active.timeSkip()
+	end
+end
+
+-- Panggil METODE AKSI pada mekanisme aktif (mis. wearIhram/makeNiat/throw/beginSacrifice). Dipakai
+-- RemoteEvent RitualAction dari UI; pemanggil (bootstrap) yang menyaring nama aksi (whitelist).
+function Registry.actionActive(action: string, ...: any)
+	local m = Registry._active
+	if m and type(m[action]) == "function" then
+		m[action](...)
+	end
+end
+
 return Registry

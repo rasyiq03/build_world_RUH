@@ -11,15 +11,13 @@
 --     nodes   = { [id] = { text = "...", choices = { { text = "...", to = "<id>"|"close" } } } },
 --   }
 
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local UiBridge = require(script.Parent.UiBridge)
 
 local Dialog = {}
 
 export type Choice = { text: string, to: string }
 export type Node = { text: string, choices: { Choice }? }
 export type Tree = { speaker: string, start: string, nodes: { [string]: Node } }
-
-local REMOTE_NAME = "NpcDialog"
 
 -- Ambil node; default ke tree.start bila nodeId nil.
 function Dialog.node(tree: any, nodeId: string?): any
@@ -48,31 +46,14 @@ function Dialog.validate(tree: any): (boolean, string?)
 	return true
 end
 
-local function remote(): any
-	local r = ReplicatedStorage:FindFirstChild(REMOTE_NAME)
-	if not r then
-		pcall(function()
-			r = Instance.new("RemoteEvent")
-			r.Name = REMOTE_NAME
-			r.Parent = ReplicatedStorage
-		end)
-	end
-	return r
-end
-
--- Buka dialog di client pemain (kirim seluruh pohon; navigasi lokal di client). Aman headless (pcall).
+-- Buka dialog di client pemain (kirim seluruh pohon; navigasi lokal di client). Lewat UiBridge.
 function Dialog.open(player: any, tree: any)
 	local ok, err = Dialog.validate(tree)
 	if not ok then
 		warn("[Dialog] pohon tak valid: " .. tostring(err))
 		return
 	end
-	local r = remote()
-	if r then
-		pcall(function()
-			r:FireClient(player, tree)
-		end)
-	end
+	UiBridge.fireTo(player, UiBridge.EVENTS.NpcDialog, tree)
 end
 
 return Dialog

@@ -31,6 +31,7 @@ local halfway = false
 local player: Player? = nil
 local label = "Mina"
 local conns: { any } = {}
+local clock: any = nil -- ManasikClock (opsional) untuk time-skip & sinkron langit
 
 function M.init() end
 
@@ -43,6 +44,7 @@ function M.activate(ctx: Ctx.Mabit?)
 	player = ctx and ctx.player or nil
 	duration = (ctx and ctx.config and ctx.config.mabitSeconds) or DEFAULT_SECONDS
 	label = (ctx and ctx.label) or "Mina"
+	clock = ctx and ctx.clock
 
 	local zonePart = ctx and ctx.zonePart
 	if not zonePart then
@@ -93,6 +95,21 @@ function M.step(dt: number)
 		if player then
 			Notify.toPlayer(player, ("Subuh tiba. Mabit di %s selesai."):format(label))
 		end
+	end
+end
+
+-- TIME-SKIP (pilihan pemain): penuhi capaian mabit + lompat jam ke subuh. Hanya saat HADIR.
+function M.timeSkip()
+	if not active or done or not present then
+		return
+	end
+	elapsed = duration
+	done = true
+	pcall(function()
+		if clock then clock.advanceTo(5.0) end -- subuh
+	end)
+	if player then
+		Notify.toPlayer(player, ("Time-skip: subuh tiba. Mabit di %s selesai."):format(label))
 	end
 end
 

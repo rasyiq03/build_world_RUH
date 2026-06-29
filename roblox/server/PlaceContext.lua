@@ -93,8 +93,8 @@ function PlaceContext.Makkah(stage: any, _state: any, player: Player): any
 			config = { target = SAI_TARGET, reachRadius = 12 },
 		}
 	elseif r == "Tahallul" then
-		-- Di Makkah hanya tahallul UMRAH (tahallul awal haji = Mina). station nil → aksi via UI Panduan.
-		return { player = player, place = "Makkah", mode = "umrah" }
+		-- Di Makkah hanya tahallul UMRAH (tahallul awal haji = Mina). viaUI → tunggu tombol "Cukur".
+		return { player = player, place = "Makkah", mode = "umrah", viaUI = true }
 	elseif r == "IhramHaji" then
 		-- Niat haji 8 Dzulhijjah (Tamattu', setelah tahallul umrah). station nil → langsung.
 		return { player = player, place = "Makkah" }

@@ -10,16 +10,12 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Shared = ReplicatedStorage:WaitForChild("Shared")
 local LobbyStart = require(Shared:WaitForChild("LobbyStart"))
 local Teleport = require(Shared:WaitForChild("Teleport"))
+local UiBridge = require(Shared:WaitForChild("UiBridge"))
 
--- Kontrak RemoteEvent Lobby→server (client fire: ibadahType, chosenMiqat).
-local remote = ReplicatedStorage:FindFirstChild("StartManasik")
-if not remote then
-	remote = Instance.new("RemoteEvent")
-	remote.Name = "StartManasik"
-	remote.Parent = ReplicatedStorage
-end
+-- Kontrak RemoteEvent Lobby→server (client fire: ibadahType, chosenMiqat). Nama via UiBridge.
+local remote = UiBridge.remote(UiBridge.EVENTS.StartManasik)
 
-(remote :: RemoteEvent).OnServerEvent:Connect(function(player: Player, ibadahType: any, chosenMiqat: any)
+;(remote :: RemoteEvent).OnServerEvent:Connect(function(player: Player, ibadahType: any, chosenMiqat: any)
 	local data, err = LobbyStart.buildData(ibadahType, chosenMiqat)
 	if not data then
 		warn(("[Lobby] pilihan %s ditolak: %s"):format(player.Name, tostring(err)))

@@ -9,6 +9,7 @@
 -- aman tanpa Humanoid/atribut (headless); umpan balik utama lewat Notify.
 
 local Notify = require(script.Parent.Notify)
+local PlayerState = require(script.Parent.PlayerState)
 
 local ComfortStations = {}
 
@@ -45,6 +46,7 @@ function ComfortStations.zamzam(part: BasePart, opts: any?): any
 			player:SetAttribute("ZamzamDrinks", n)
 			player:SetAttribute("Thirst", 0)
 		end)
+		pcall(function() PlayerState.set(player, "refreshed", true) end)
 		Notify.toPlayer(player, "Anda meminum air zamzam — segar dan berkah. Bismillah.")
 	end
 	handle._conn = attachPrompt(part, "Minum Zamzam", "Air Zamzam", handle.use)
@@ -94,9 +96,27 @@ function ComfortStations.restArea(part: BasePart, opts: any?): any
 			player:SetAttribute("Stamina", maxStamina)
 			player:SetAttribute("Rested", true)
 		end)
+		pcall(function() PlayerState.set(player, "refreshed", true) end)
 		Notify.toPlayer(player, "Anda beristirahat sejenak — tenaga pulih, siap melanjutkan manasik.")
 	end
 	handle._conn = attachPrompt(part, "Istirahat", "Area Istirahat", handle.use)
+	function handle.destroy()
+		if handle._conn then handle._conn:Disconnect() end
+	end
+	return handle
+end
+
+-- WARUNG/MAKAN — makan (aksi imersif opsional; bukan needs). Hitung porsi, tandai refreshed.
+function ComfortStations.foodStall(part: BasePart, opts: any?): any
+	local handle = {}
+	function handle.use(player: Player)
+		pcall(function()
+			player:SetAttribute("Meals", (player:GetAttribute("Meals") or 0) + 1)
+		end)
+		pcall(function() PlayerState.set(player, "refreshed", true) end)
+		Notify.toPlayer(player, "Anda makan sejenak — tenaga terisi. Alhamdulillah.")
+	end
+	handle._conn = attachPrompt(part, "Makan", "Warung Jamaah", handle.use)
 	function handle.destroy()
 		if handle._conn then handle._conn:Disconnect() end
 	end

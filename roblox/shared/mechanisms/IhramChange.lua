@@ -18,6 +18,8 @@
 local Notify = require(script.Parent.Parent.Notify)
 
 local Ctx = require(script.Parent.Parent.Ctx)
+local PlayerState = require(script.Parent.Parent.PlayerState)
+local Wardrobe = require(script.Parent.Parent.Wardrobe)
 
 local M = {}
 M.id = "IhramChange"
@@ -43,25 +45,12 @@ local function notify(msg: string)
 	end
 end
 
--- Terapkan penampilan ihram (kosmetik). Aman dipanggil headless.
-local function applyIhramAppearance()
-	local p = player
-	if not p then return end
-	pcall(function()
-		local char = p.Character
-		local hum = char and char:FindFirstChildOfClass("Humanoid")
-		if hum then
-			-- Placeholder: di Studio, ganti dgn HumanoidDescription kain ihram. Tandai via atribut.
-			char:SetAttribute("Ihram", true)
-		end
-	end)
-end
-
 -- API publik: kenakan kain ihram.
 function M.wearIhram()
 	if not active or worn then return end
 	worn = true
-	applyIhramAppearance()
+	if player then PlayerState.set(player, "ihramWorn", true) end
+	if player then Wardrobe.apply(player, "ihram") end -- ganti penampilan via Wardrobe (aset Studio)
 	notify("Kain ihram dikenakan (2 helai putih tanpa jahitan). Selanjutnya: niat.")
 end
 
@@ -73,6 +62,7 @@ function M.makeNiat()
 		return
 	end
 	niatDone = true
+	if player then PlayerState.set(player, "niat", true) end
 	notify(NIAT[ibadahType] or NIAT.Umrah)
 	notify("Anda kini dalam keadaan IHRAM — perhatikan larangan ihram.")
 end

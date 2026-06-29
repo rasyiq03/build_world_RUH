@@ -32,6 +32,7 @@ local performed = false
 local player: Player? = nil
 local mode = "umrah"
 local station: BasePart? = nil
+local viaUI = false -- bila true & tanpa station: tunggu tombol UI (M.cukur), jangan auto-perform
 local conns: { any } = {}
 
 local function setState(p: Player?, s: TahallulState)
@@ -83,6 +84,7 @@ function M.activate(ctx: Ctx.Tahallul?)
 	player = ctx and ctx.player or nil
 	mode = (ctx and ctx.mode) or "umrah"
 	station = ctx and ctx.station or nil
+	viaUI = (ctx and ctx.viaUI) == true
 
 	if station then
 		conns[#conns + 1] = station.Touched:Connect(function(hit)
@@ -94,8 +96,18 @@ function M.activate(ctx: Ctx.Tahallul?)
 		if player then
 			Notify.toPlayer(player, "Menuju tempat cukur untuk tahallul...")
 		end
+	elseif player and not viaUI then
+		-- tanpa station & bukan via UI → langsung (alur otomatis / uji headless).
+		perform(player)
 	elseif player then
-		-- tanpa station → aksi langsung (mis. dipicu tombol UI Panduan milik Devi).
+		-- via UI: tunggu tombol "Cukur" (RitualAction "cukur" → M.cukur).
+		Notify.toPlayer(player, "Saatnya tahallul — klik tombol Cukur di buku panduan.")
+	end
+end
+
+-- API publik: lakukan cukur (tahallul) dari TOMBOL UI (RitualAction "cukur"). Aman dipanggil ulang.
+function M.cukur()
+	if active and not performed and player then
 		perform(player)
 	end
 end

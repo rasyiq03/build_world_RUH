@@ -16,6 +16,7 @@ local Notify = require(script.Parent.Parent.Notify)
 local Kit = require(script.Parent._MechanismKit)
 
 local Ctx = require(script.Parent.Parent.Ctx)
+local PlayerState = require(script.Parent.Parent.PlayerState)
 
 local M = {}
 M.id = "PebbleCollect"
@@ -56,6 +57,7 @@ function M.activate(ctx: Ctx.Pebble?)
 				-- mencegah satu kerikil yang sama dihitung dua kali oleh pemain ini.
 				picked[peb] = true
 				collected += 1
+				PlayerState.set(p, "pebbles", collected)
 				Notify.toPlayer(p, ("Kerikil %d/%d terkumpul."):format(collected, target))
 				if collected >= target then
 					Notify.toPlayer(p, ("%d kerikil siap untuk Jumrah. Bersiap ke Mina."):format(target))

@@ -8,12 +8,18 @@ local TeleportService = game:GetService("TeleportService")
 
 local Teleport = {}
 
--- TODO: isi dengan PlaceId hasil publish tiap place.
+-- PlaceId hasil publish (diisi 2026-06-23). Mengaktifkan teleport antar-place + resolvePlaceName otomatis.
 Teleport.PLACE_IDS = {
-	Lobby = 0,
-	Miqat_BirAli = 0, Miqat_Juhfah = 0, Miqat_DzatuIrq = 0,
-	Miqat_QarnulManazil = 0, Miqat_Yalamlam = 0,
-	Makkah = 0, Mina = 0, Muzdalifah = 0, Arafah = 0,
+	Lobby = 79374115830204,
+	Miqat_BirAli = 113143272151436,
+	Miqat_Juhfah = 74551325991958,
+	Miqat_DzatuIrq = 91587948581858,
+	Miqat_QarnulManazil = 94936719891572,
+	Miqat_Yalamlam = 131791680798575,
+	Makkah = 97208840151896,
+	Mina = 113068017410086,
+	Muzdalifah = 135368186858728,
+	Arafah = 74819541386960,
 } :: { [string]: number }
 
 -- Pindahkan pemain ke `placeName`. `data` dibawa lintas-place (mis. ibadahType,
@@ -27,6 +33,28 @@ function Teleport.toPlace(player: Player, placeName: string, data: { [string]: a
 	local opts = Instance.new("TeleportOptions")
 	if data then opts:SetTeleportData(data) end
 	TeleportService:TeleportAsync(id, { player }, opts)
+end
+
+-- Reverse-lookup: PlaceId → nama place (SYSTEMS_DESIGN §6). Menghapus kebutuhan set atribut
+-- Workspace.PlaceName manual: sekali PLACE_IDS terisi (wajib utk teleport), nama place otomatis.
+function Teleport.placeNameFor(placeId: number): string?
+	for name, id in pairs(Teleport.PLACE_IDS) do
+		if id ~= 0 and id == placeId then
+			return name
+		end
+	end
+	return nil
+end
+
+-- Nama place efektif. PRIORITAS atribut Workspace.PlaceName sebagai ACUAN/override (aman bila PlaceId
+-- salah/rusak/duplikat) → bila atribut kosong, otomatis dari PlaceId → default. Auto secara default,
+-- tapi PlaceName SELALU bisa menimpa (set manual di place untuk jaga-jaga).
+function Teleport.resolvePlaceName(default: string?): string
+	local attr = workspace:GetAttribute("PlaceName") :: string?
+	if attr and attr ~= "" then
+		return attr
+	end
+	return Teleport.placeNameFor(game.PlaceId) or default or "Arafah"
 end
 
 return Teleport

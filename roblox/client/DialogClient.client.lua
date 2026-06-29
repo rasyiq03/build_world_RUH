@@ -6,8 +6,10 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local Dialog = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Dialog"))
-local remote = ReplicatedStorage:WaitForChild("NpcDialog")
+local Shared = ReplicatedStorage:WaitForChild("Shared")
+local Dialog = require(Shared:WaitForChild("Dialog"))
+local UiBridge = require(Shared:WaitForChild("UiBridge"))
+local remote = ReplicatedStorage:WaitForChild(UiBridge.EVENTS.NpcDialog)
 local player = Players.LocalPlayer
 
 -- ── bangun GUI sekali ──

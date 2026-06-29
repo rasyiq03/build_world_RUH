@@ -122,20 +122,47 @@ Bukan dugaan — ditemukan dari kode. **Perbaiki sebelum dianggap "world serius 
 1. ✅ **DIPERBAIKI 2026-06-23 (paritas 4=4).** Ditambah `generate_muzdalifah.py` (masyaril_haram/
    boundary/pebble_area/facilities), `to_roblox_module.MAPS["D_Muzdalifah"]`, `D_Muzdalifah/
    build_muzdalifah.lua`, dan `WorldProviders.muzdalifahPebbles` kini menyebar kerikil DI region nyata
-   `D_Muzdalifah.AreaKerikil` (placeholder origin hanya bila build belum jalan). **Sisa opsional:**
-   `render_route`/`nav_guide` Muzdalifah (rute lintas-zona) bila ingin jalan & panah nav di sana.
+   `D_Muzdalifah.AreaKerikil` (placeholder origin hanya bila build belum jalan). ✅ **DITUNTASKAN
+   2026-06-25:** ditambah `D_Muzdalifah/render_route.lua` (aspal `MuzdalifahRoute`, CARVE koridor)
+   & `D_Muzdalifah/nav_guide.lua` (panah+ETA, default ke segmen KELUAR Muzdalifah→Mina). Paritas
+   route+nav kini **4=4 penuh**.
 2. ✅ **DIPERBAIKI 2026-06-23.** `to_roblox_module.MAPS["B_Mina"]` kini memuat `MinaTents`←mina_tents
    & `MinaBuildings`←osm_buildings_corridor (yang dibaca `place_from_modules.lua`); docstring contoh
    diselaraskan dgn MAPS. (Dulu: kedua module tak pernah dibungkus → link putus.)
 3. ✅ **DIPERBAIKI 2026-06-23.** `place_osm_buildings.lua` (12,5k baris inline) & `place_tents.lua`
    (tempel-inline) DIHAPUS; data 440 bangunan diselamatkan ke `output/B_Mina/osm_buildings_corridor.json`.
    Kanonik = `place_from_modules.lua` (module-based). Tenda kanonik via `build_mina`/`MinaTerraces`.
-4. ✅ **DIPERBAIKI 2026-06-23.** `render_route.lua` (ketiga zona) kini CARVE koridor: `FillBlock` Air
-   di atas (`CARVE_UP`) + Sand roadbed di bawah (`FILL_DOWN`) sepanjang slab → jalan rata, tak terbenam
-   di lereng menyamping. Toggle `CARVE_ROAD` (default true; false = drape lama).
+4. ✅ **DIPERBAIKI 2026-06-23.** `render_route.lua` (keempat zona, termasuk Muzdalifah sejak 2026-06-25)
+   kini CARVE koridor: `FillBlock` Air di atas (`CARVE_UP`) + Sand roadbed di bawah (`FILL_DOWN`)
+   sepanjang slab → jalan rata, tak terbenam di lereng menyamping. Toggle `CARVE_ROAD` (default true; false = drape lama).
 5. ✅ **DIPERBAIKI 2026-06-23.** Header `render_route.lua` tiap zona kini merujuk zona & build benar
-   (Makkah→build_makkah, Arafah→build_arafah, Mina→build_mina).
+   (Makkah→build_makkah, Arafah→build_arafah, Mina→build_mina, Muzdalifah→build_muzdalifah).
 6. ✅ **DIPERBAIKI 2026-06-23.** Contoh `PIPELINE.md` diselaraskan ke skala 4 + box 26.286×19.636 (sesuai `config.json`).
 
-> Status sinkron logic↔world: **Makkah/Mina/Arafah/Bus SUDAH cocok** (§5). Yang belum: **Muzdalifah**
-> (#1) + packaging Mina (#2/#3). Mulai dari #1 (paritas Muzdalifah) untuk benar-benar 4=4.
+> Status sinkron logic↔world: **Makkah/Mina/Arafah/Muzdalifah/Bus SUDAH cocok** (§5). Paritas
+> build + route + nav kini **4=4 penuh** (Muzdalifah dituntaskan 2026-06-25, lihat #1).
+
+---
+
+## 7. 🌍 Audit FIDELITY dunia-nyata (2026-06-25)
+
+Audit ini ≠ §6 (yang soal pipeline desync). Ini soal "seberapa setia geometri ke dunia nyata".
+**Verdikt: rantai data faithful** — rute = jalan OSM nyata (Dijkstra, `trace_hajj_route.py`),
+proyeksi baca `geo_bounds` manifest (nol hardcode), 5 landmark jatuh di kotak zona masing-masing,
+urutan geografis benar (Makkah→Mina→Muzdalifah→Arafah, barat→timur / utara→selatan).
+
+**✅ Temuan A — DIPERBAIKI.** `generate_makkah.py` dulu skematik (offset Ka'bah hardcode ±760,
+fallback studs `86,-9`, label "perkiraan—refine"). Kini **hybrid real-coord**: baca manifest + proyektor
+`to_xz`; Ka'bah (OSM `كعبة` / lon-lat literatur), Abraj/Safa/Marwah dari lon/lat literatur via manifest;
+Maqam (13 m TL) & Hijr Ismail (9 m BL, r 8,5 m) dari offset **meter nyata** relatif Ka'bah; gerbang
+bearing nyata 4 sisi (`approx:true`). Field `_provenance` mencatat sumber. Terverifikasi headless (zona
+sintetik): Abraj 425 m S, Mas'a 380 m, arah semua benar. Kontrak JSON `build_makkah.lua` utuh.
+
+**⚠️ Temuan B — DIKETAHUI, by-design (belum diubah).** Di SEMUA zona, **batas/gapura** ("Batas Arafah/
+Muzdalifah"), **fasilitas MCK**, **lampu-grid**, dan **guardline** = persegi/grid **prosedural** di sekeliling
+bbox konten — **BUKAN** rambu/batas masyair tersurvei dari OSM. Ini sengaja (pengurung gameplay), tapi
+JANGAN dikira batas nyata. (Mist & lampu utama tetap ikut polyline rute/jalan nyata.) Bila kelak ingin
+batas nyata: tarik relation `boundary`/`landuse` dari OSM, ganti generator persegi → poligon OSM.
+
+**Catatan provenance landmark:** Safa/Marwah/Abraj/gerbang Makkah masih lon/lat **literatur** (terlabel di
+`_provenance` makkah_landmarks.json), bukan node OSM. Refine via OSM node bila perlu presisi lebih.

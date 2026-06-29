@@ -83,6 +83,12 @@ function ManasikRunner._enterStage(self, stage)
 		return
 	end
 
+	-- HUD client: tandai tahap berjalan + jenis ibadah (dibaca client/GuideHud via atribut pemain).
+	pcall(function()
+		self.player:SetAttribute("ManasikStage", stage.id)
+		self.player:SetAttribute("ManasikIbadah", self.state.ibadahType)
+	end)
+
 	if stage.ritual then
 		local ctx = self.buildContext and self.buildContext(stage, self.state, self.player)
 			or { player = self.player, place = resolved }

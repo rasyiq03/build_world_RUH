@@ -17,9 +17,11 @@ local MechanismRegistry = require(Shared:WaitForChild("MechanismRegistry"))
 local ManasikState = require(Shared:WaitForChild("ManasikState"))
 local ManasikRunner = require(Shared:WaitForChild("ManasikRunner"))
 local Teleport = require(Shared:WaitForChild("Teleport"))
+local UiBridge = require(Shared:WaitForChild("UiBridge"))
 local PlaceContext = require(script.Parent:WaitForChild("PlaceContext"))
 
-local PLACE_NAME: string = workspace:GetAttribute("PlaceName") :: string or "Arafah"
+-- PlaceName: ACUAN atribut Workspace.PlaceName (override aman) → fallback otomatis PlaceId. §SYSTEMS_DESIGN.
+local PLACE_NAME: string = Teleport.resolvePlaceName("Arafah")
 local DEV_IBADAH = "HajiTamattu"
 local DEV_MIQAT = "Miqat_BirAli"
 
@@ -31,6 +33,22 @@ if PLACE_NAME == "Lobby" then
 end
 
 MechanismRegistry.load()
+
+-- INTENT pemain (UiBridge): time-skip ritual-tunggu + aksi ritual (klik tombol UI → mekanisme aktif).
+;(UiBridge.remote(UiBridge.EVENTS.RequestTimeSkip) :: RemoteEvent).OnServerEvent:Connect(function(_player)
+	MechanismRegistry.timeSkipActive()
+end)
+
+-- Whitelist aksi ritual yang boleh dipicu dari UI (mekanisme tetap memvalidasi argumennya sendiri).
+local ALLOWED_ACTIONS = {
+	wearIhram = true, makeNiat = true, board = true,
+	throw = true, chooseNafar = true, beginSacrifice = true, cukur = true,
+}
+;(UiBridge.remote(UiBridge.EVENTS.RitualAction) :: RemoteEvent).OnServerEvent:Connect(function(_player, action, ...)
+	if type(action) == "string" and ALLOWED_ACTIONS[action] then
+		MechanismRegistry.actionActive(action, ...)
+	end
+end)
 
 -- Resolusi penyedia ctx per-place. Place miqat (Miqat_BirAli/…​) memakai PlaceContext.Miqat generik.
 local function contextBuilderFor(placeName: string)

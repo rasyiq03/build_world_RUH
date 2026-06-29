@@ -83,3 +83,41 @@ for _ = 1, 20 do
 end
 local obZ1 = ob.PrimaryPart.Position.Z
 h.event("note", { text = "OB patroli: Z " .. string.format("%.1f→%.1f", obZ0, obZ1) .. " (harus bergerak)" })
+
+----------------------------------------------------------------------------------------------------
+-- BAGIAN D — Roster + Spawner (roster→spawn→updateAll) end-to-end.
+----------------------------------------------------------------------------------------------------
+local NpcRoster = h.require("NpcRoster")
+local NpcSpawner = h.require("NpcSpawner")
+local modules = {
+	Askar = Askar, PetugasOB = OB,
+	JamaahNegara = h.require("JamaahNegara"),
+	JamaahTawaf = h.require("JamaahTawaf"),
+	PendorongKursiRoda = h.require("PendorongKursiRoda"),
+	PetugasMedis = h.require("PetugasMedis"),
+	TNI = h.require("TNI"),
+}
+
+local rMakkah = NpcRoster.forPlace("Makkah")
+h.event("note", { text = "Roster Makkah: " .. #rMakkah .. " spek (Askar/OB/KursiRoda/JamaahTawaf×12)" })
+h.event("note", { text = "Roster Miqat_BirAli: " .. #NpcRoster.forPlace("Miqat_BirAli") .. " · Arafah: " .. #NpcRoster.forPlace("Arafah") })
+
+local active = NpcSpawner.spawnRoster(rMakkah, {
+	framework = NpcFramework,
+	modules = modules,
+	center = Vector3.new(100, 0, 100),
+	getPlayers = function() return { player } end,
+})
+h.event("note", { text = "Makkah spawn: " .. #active .. " NPC aktif (harus 1+1+1+12 = 15)" })
+
+for _ = 1, 40 do
+	h.heartbeat(0.2)
+	NpcSpawner.updateAll(active, 0.2)
+end
+-- Hitung jamaah tawaf yang sudah berputar (orbit jalan via updateAll).
+local jt = modules.JamaahTawaf
+local orbited = 0
+for _, e in ipairs(active) do
+	if e.module == jt and jt.angleOf(e.npc) ~= 0 then orbited += 1 end
+end
+h.event("note", { text = "Setelah updateAll: " .. orbited .. " JamaahTawaf berputar (harus 12)" })

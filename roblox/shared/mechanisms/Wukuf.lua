@@ -32,6 +32,7 @@ local present = false
 local player: Player? = nil
 local lastMilestone = -1
 local conns: { any } = {}
+local clock: any = nil -- ManasikClock (opsional) untuk time-skip & sinkron langit
 
 function M.init()
 	-- Tanpa side-effect saat load; zona dipasang di activate (butuh ctx).
@@ -45,6 +46,7 @@ function M.activate(ctx: Ctx.Wukuf?)
 	lastMilestone = -1
 	player = ctx and ctx.player or nil
 	duration = (ctx and ctx.config and ctx.config.wukufSeconds) or DEFAULT_SECONDS
+	clock = ctx and ctx.clock
 
 	local zonePart = ctx and ctx.zonePart
 	if not zonePart then
@@ -108,6 +110,23 @@ end
 -- Diteruskan ke WukufIbadah (dipanggil UI/RemoteEvent saat pemain berdoa/berzikir).
 function M.recordDeed(p: Player, deedId: string): boolean
 	return WukufIbadah.recordDeed(p, deedId)
+end
+
+-- TIME-SKIP (pilihan pemain, SYSTEMS_DESIGN §1): penuhi capaian KEHADIRAN + lompat jam ke maghrib.
+-- Hanya boleh saat HADIR di Arafah (capaian tetap dijaga; skip hanya memangkas waktu tunggu).
+function M.timeSkip()
+	if not active or done or not present then
+		return
+	end
+	elapsed = duration
+	done = true
+	pcall(function()
+		if clock then clock.advanceTo(18.25) end -- maghrib
+	end)
+	WukufIbadah.finish()
+	if player then
+		Notify.toPlayer(player, "Time-skip: maghrib tiba. Wukuf SAH (Anda hadir di Arafah).")
+	end
 end
 
 function M.deactivate()
